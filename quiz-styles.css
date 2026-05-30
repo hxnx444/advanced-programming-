@@ -1,0 +1,476 @@
+/* =============================================
+   Advanced Java Quiz — Full CSS Stylesheet
+   Drop this in your project and link it via:
+   <link rel="stylesheet" href="quiz-styles.css">
+   ============================================= */
+
+/* ---- Reset & Base ---- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --purple-light: #EEEDFE;
+  --purple-mid:   #7F77DD;
+  --purple-dark:  #3C3489;
+
+  --teal-light:   #E1F5EE;
+  --teal-dark:    #085041;
+
+  --coral-light:  #FAECE7;
+  --coral-dark:   #712B13;
+
+  --green-light:  #EAF3DE;
+  --green-dark:   #27500A;
+
+  --red-light:    #FCEBEB;
+  --red-dark:     #791F1F;
+
+  --amber-light:  #FAEEDA;
+  --amber-dark:   #633806;
+
+  --gray-light:   #F1EFE8;
+  --gray-mid:     #888780;
+  --gray-dark:    #444441;
+
+  --bg:           #ffffff;
+  --bg-secondary: #f7f7f5;
+  --bg-tertiary:  #f0efe8;
+
+  --text:         #1a1a18;
+  --text-muted:   #5f5e5a;
+  --text-hint:    #888780;
+
+  --border:       rgba(0,0,0,0.10);
+  --border-mid:   rgba(0,0,0,0.18);
+
+  --radius-sm:    6px;
+  --radius-md:    10px;
+  --radius-lg:    14px;
+  --radius-pill:  999px;
+
+  --shadow-card:  0 1px 3px rgba(0,0,0,0.07), 0 0 0 0.5px rgba(0,0,0,0.06);
+  --shadow-hover: 0 4px 12px rgba(0,0,0,0.10), 0 0 0 0.5px rgba(0,0,0,0.08);
+
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+
+  --transition: 150ms ease;
+}
+
+body {
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text);
+  background: var(--bg-tertiary);
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+
+/* ---- Page wrapper ---- */
+.quiz-page {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* ---- Header ---- */
+.quiz-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+
+.quiz-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+
+.quiz-counter {
+  font-size: 13px;
+  color: var(--text-muted);
+  background: var(--bg-secondary);
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  border: 0.5px solid var(--border);
+}
+
+/* ---- Chapter filter tabs ---- */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 1.25rem;
+}
+
+.filter-btn {
+  padding: 5px 13px;
+  border-radius: var(--radius-pill);
+  border: 0.5px solid var(--border-mid);
+  background: var(--bg);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.filter-btn:hover {
+  background: var(--bg-secondary);
+  border-color: var(--border-mid);
+  color: var(--text);
+}
+
+.filter-btn.active {
+  background: var(--purple-light);
+  border-color: var(--purple-mid);
+  color: var(--purple-dark);
+  font-weight: 600;
+}
+
+/* ---- Stats row ---- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 1.25rem;
+}
+
+.stat-card {
+  background: var(--bg);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px 10px;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+}
+
+.stat-number {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.stat-number.correct { color: var(--green-dark); }
+.stat-number.wrong   { color: var(--red-dark); }
+.stat-number.pct     { color: var(--purple-dark); }
+
+.stat-label {
+  font-size: 11px;
+  color: var(--text-hint);
+  margin-top: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ---- Progress bar ---- */
+.progress-track {
+  height: 5px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-pill);
+  margin-bottom: 1.25rem;
+  overflow: hidden;
+  border: 0.5px solid var(--border);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--purple-mid), #9b95e8);
+  border-radius: var(--radius-pill);
+  transition: width 0.4s ease;
+}
+
+/* ---- Question card ---- */
+.question-card {
+  background: var(--bg);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--transition);
+}
+
+.question-card:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+/* ---- Meta tags ---- */
+.q-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.chapter-tag {
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.diff-tag {
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  background: var(--gray-light);
+  color: var(--gray-dark);
+  border: 0.5px solid var(--border);
+}
+
+.diff-tag.easy   { background: var(--green-light); color: var(--green-dark); }
+.diff-tag.medium { background: var(--amber-light); color: var(--amber-dark); }
+.diff-tag.hard   { background: var(--red-light);   color: var(--red-dark); }
+
+/* ---- Trap warning ---- */
+.trap-warning {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--amber-light);
+  color: var(--amber-dark);
+  border: 0.5px solid #EF9F27;
+  border-radius: var(--radius-md);
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+/* ---- Question text ---- */
+.question-text {
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.7;
+  margin-bottom: 1.1rem;
+  font-weight: 400;
+}
+
+/* ---- Code block ---- */
+.code-block {
+  background: #1e1e2e;
+  color: #cdd6f4;
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.65;
+  margin-bottom: 1.1rem;
+  overflow-x: auto;
+  white-space: pre;
+  border: 0.5px solid rgba(255,255,255,0.08);
+}
+
+/* ---- Answer options ---- */
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.option-btn {
+  text-align: left;
+  padding: 11px 16px;
+  border-radius: var(--radius-md);
+  border: 0.5px solid var(--border-mid);
+  background: var(--bg-secondary);
+  color: var(--text);
+  font-size: 14px;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: all var(--transition);
+  line-height: 1.5;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.option-btn .opt-label {
+  min-width: 20px;
+  font-weight: 600;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.option-btn:hover:not(:disabled) {
+  background: var(--bg);
+  border-color: var(--purple-mid);
+  color: var(--text);
+  transform: translateX(2px);
+  box-shadow: var(--shadow-card);
+}
+
+.option-btn:disabled {
+  cursor: default;
+}
+
+.option-btn.correct {
+  background: var(--green-light);
+  border-color: #97C459;
+  color: var(--green-dark);
+}
+
+.option-btn.correct .opt-label {
+  color: var(--green-dark);
+}
+
+.option-btn.wrong {
+  background: var(--red-light);
+  border-color: #F09595;
+  color: var(--red-dark);
+}
+
+.option-btn.wrong .opt-label {
+  color: var(--red-dark);
+}
+
+/* ---- Feedback banner ---- */
+.feedback-banner {
+  margin-top: 1rem;
+  padding: 11px 16px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  line-height: 1.6;
+  display: none;
+  border-width: 0.5px;
+  border-style: solid;
+}
+
+.feedback-banner.correct {
+  background: var(--green-light);
+  color: var(--green-dark);
+  border-color: #97C459;
+}
+
+.feedback-banner.wrong {
+  background: var(--red-light);
+  color: var(--red-dark);
+  border-color: #F09595;
+}
+
+/* ---- Bottom bar ---- */
+.bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.25rem;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.score-text {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.next-btn {
+  padding: 9px 22px;
+  border-radius: var(--radius-md);
+  border: 0.5px solid var(--border-mid);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: all var(--transition);
+  font-weight: 500;
+  display: none;
+}
+
+.next-btn:hover {
+  background: var(--purple-light);
+  border-color: var(--purple-mid);
+  color: var(--purple-dark);
+}
+
+.next-btn:active {
+  transform: scale(0.98);
+}
+
+/* ---- Done screen ---- */
+.done-screen {
+  text-align: center;
+  padding: 3rem 1.5rem;
+}
+
+.done-score {
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -1px;
+  margin-bottom: 8px;
+}
+
+.done-message {
+  font-size: 16px;
+  color: var(--text-muted);
+  margin-bottom: 1.75rem;
+}
+
+.done-pct-badge {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+
+.done-pct-badge.great  { background: var(--green-light); color: var(--green-dark); }
+.done-pct-badge.ok     { background: var(--amber-light); color: var(--amber-dark); }
+.done-pct-badge.low    { background: var(--red-light);   color: var(--red-dark); }
+
+.restart-btn {
+  padding: 11px 32px;
+  border-radius: var(--radius-md);
+  border: 0.5px solid var(--border-mid);
+  background: var(--purple-light);
+  color: var(--purple-dark);
+  font-size: 15px;
+  font-family: var(--font);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.restart-btn:hover {
+  background: var(--purple-mid);
+  color: #fff;
+  border-color: var(--purple-mid);
+}
+
+.restart-btn:active {
+  transform: scale(0.98);
+}
+
+/* ---- Scrollbar (webkit) ---- */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 3px; }
+
+/* ---- Responsive ---- */
+@media (max-width: 520px) {
+  body { padding: 1rem 0.75rem; }
+
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+
+  .quiz-title { font-size: 17px; }
+
+  .question-text { font-size: 14px; }
+
+  .option-btn { font-size: 13px; padding: 9px 12px; }
+
+  .done-score { font-size: 36px; }
+}

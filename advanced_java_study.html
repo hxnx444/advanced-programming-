@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Java — Exam Prep 476+Q</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f0f13;--bg2:#16161e;--bg3:#1f1f2e;--bg4:#2a2a3f;--border:#2f2f42;--border2:#444460;--text:#f4f4f5;--text2:#a1a1aa;--text3:#71717a;--accent:#818cf8;--green:#34d399;--yellow:#fbbf24;--yellow2:#92400e;--red:#f87171;--blue:#60a5fa;--cyan:#22d3ee;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overflow-x:hidden}
+header{background:rgba(22,22,30,0.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:0 1.5rem;position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:1rem;height:64px;box-shadow:0 4px 12px rgba(0,0,0,0.15)}
+.logo{font-size:1.1rem;font-weight:800;color:var(--accent);white-space:nowrap}
+.logo span{color:var(--text2);font-weight:400}
+.stats-bar{display:flex;gap:1.5rem;flex:1;justify-content:center}
+.stat-pill{font-family:var(--mono);font-size:11px;color:var(--text2);display:flex;align-items:center;gap:6px;white-space:nowrap}
+.stat-pill b{color:var(--text);font-weight:700}
+.header-actions{display:flex;gap:8px;margin-left:auto}
+.hbtn{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:8px 14px;border-radius:8px;cursor:pointer;font-family:var(--mono);font-size:12px;transition:all .2s ease;font-weight:500}
+.hbtn:hover{border-color:var(--accent);color:var(--accent)}
+.hbtn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.app{display:flex;height:calc(100vh - 56px)}
+.sidebar{width:240px;background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;flex-shrink:0;padding:12px 0}
+.main{flex:1;overflow-y:auto;padding:1.5rem}
+.sidebar-label{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;padding:4px 12px 6px}
+.chapter-btn{display:flex;align-items:center;gap:8px;width:100%;padding:8px 12px;border:none;background:transparent;color:var(--text2);cursor:pointer;font-family:var(--sans);font-size:12px;text-align:left;border-radius:6px;transition:all .15s}
+.chapter-btn:hover{background:var(--bg3);color:var(--text)}
+.chapter-btn.active{background:var(--bg4);color:var(--accent);border-left:2px solid var(--accent)}
+.ch-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0}
+.ch-label{flex:1;line-height:1.3}
+.ch-count{font-family:var(--mono);font-size:10px;color:var(--text3);background:var(--bg4);padding:2px 6px;border-radius:4px}
+.chapter-btn.active .ch-count{background:var(--accent);color:#fff}
+.progress-bar-mini{height:2px;background:var(--border);border-radius:1px;margin:2px 12px 6px;overflow:hidden}
+.progress-bar-mini-fill{height:100%;background:var(--accent);border-radius:1px;transition:width .3s}
+.filter-bar{display:flex;align-items:center;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap}
+.filter-btn{padding:6px 14px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);border-radius:20px;cursor:pointer;font-family:var(--mono);font-size:11px;transition:all .15s}
+.filter-btn:hover{border-color:var(--border2);color:var(--text)}
+.filter-btn.active{border-color:var(--accent);background:var(--accent);color:#fff}
+.filter-btn.diff-easy.active{background:#10b981;border-color:#10b981}
+.filter-btn.diff-medium.active{background:#f59e0b;border-color:#f59e0b}
+.filter-btn.diff-hard.active{background:#ef4444;border-color:#ef4444}
+.filter-btn.diff-trap.active{background:#8b5cf6;border-color:#8b5cf6}
+.search-input{padding:6px 14px;border:1px solid var(--border);background:var(--bg2);color:var(--text);border-radius:20px;font-family:var(--mono);font-size:11px;outline:none;transition:all .15s;min-width:200px}
+.search-input:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(129,140,248,0.2)}
+.search-input::placeholder{color:var(--text3)}
+.chapter-header{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem}
+.ch-title{font-size:1.5rem;font-weight:800;margin-bottom:6px}
+.ch-desc{color:var(--text2);font-size:14px;line-height:1.6}
+.ch-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.ch-tag{font-family:var(--mono);font-size:11px;padding:4px 10px;border-radius:4px;background:var(--bg3);border:1px solid var(--border);color:var(--text3)}
+.ch-stats{display:flex;gap:1rem;margin-top:1rem}
+.ch-stat{font-family:var(--mono);font-size:12px;color:var(--text2)}
+.ch-stat b{color:var(--text)}
+.progress-track{height:4px;background:var(--bg4);border-radius:2px;margin-top:8px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--cyan));border-radius:2px;transition:width .5s ease}
+.summary-box{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--cyan);border-radius:8px;padding:1.25rem;margin-bottom:1.5rem}
+.summary-title{font-size:13px;font-weight:700;color:var(--cyan);margin-bottom:10px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px}
+.key-point{display:flex;gap:8px;margin:6px 0;align-items:flex-start;font-size:13px;color:var(--text2);line-height:1.7}
+.key-point::before{content:"▸";color:var(--accent);flex-shrink:0;margin-top:1px}
+.trick-box{background:var(--bg2);border:1px solid var(--yellow2);border-left:3px solid var(--yellow);border-radius:8px;padding:1rem;margin-bottom:1.5rem}
+.trick-title{font-size:12px;font-weight:700;color:var(--yellow);margin-bottom:8px;font-family:var(--mono)}
+.trick-content{font-size:13px;color:var(--text2);line-height:1.6}
+.questions-grid{display:flex;flex-direction:column;gap:12px}
+.q-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:all .2s ease;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+.q-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 16px rgba(0,0,0,0.2)}
+.q-card.bookmarked{border-color:var(--yellow)}
+.q-card.solved{border-left:3px solid var(--green)}
+.q-card.wrong{border-left:3px solid var(--red)}
+.q-card-header{display:flex;align-items:flex-start;gap:12px;padding:1rem;cursor:pointer}
+.q-number{font-family:var(--mono);font-size:11px;color:var(--text3);min-width:30px;margin-top:2px}
+.q-body{flex:1}
+.q-text{font-size:14px;color:var(--text);line-height:1.6;margin-bottom:4px}
+.q-text code{font-family:var(--mono);font-size:13px;background:var(--bg3);padding:2px 6px;border-radius:4px;color:var(--blue)}
+.q-code{font-family:var(--mono);font-size:13px;line-height:1.6;background:#0d0d12;padding:12px;border-radius:8px;color:#a8d8ff;margin:8px 0;white-space:pre-wrap;overflow-x:auto;border:1px solid var(--border)}
+.q-meta{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.q-type{font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:3px}
+.q-type.mcq{background:#1e3a5f;color:#60a5fa}
+.q-type.trace{background:#1a2e1a;color:#4ade80}
+.diff-badge{font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:3px}
+.diff-Easy{background:#064e3b;color:#6ee7b7}
+.diff-Medium{background:#78350f;color:#fcd34d}
+.diff-Hard{background:#7f1d1d;color:#fca5a5}
+.diff-Trap{background:#3b0764;color:#c4b5fd}
+.q-source{font-family:var(--mono);font-size:10px;color:var(--text3);background:var(--bg3);padding:2px 7px;border-radius:3px}
+.q-actions{display:flex;gap:6px;align-items:center;flex-shrink:0}
+.q-action-btn{width:30px;height:30px;border-radius:6px;border:1px solid var(--border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .15s;color:var(--text3)}
+.q-action-btn:hover{border-color:var(--border2);color:var(--text)}
+.q-action-btn:active{transform:scale(0.9)}
+.q-action-btn.bookmark.active{border-color:var(--yellow);color:var(--yellow);background:#1a150a}
+.q-action-btn.mark-solved.active{border-color:var(--green);color:var(--green);background:#061a0f}
+.q-action-btn.mark-wrong.active{border-color:var(--red);color:var(--red);background:#1a0606}
+.q-options-panel{border-top:1px solid var(--border);padding:0 1rem 1rem;display:none}
+.q-options-panel.show{display:block}
+.q-solution{display:none;margin-top:1rem;padding-top:1rem;border-top:1px dashed var(--border2)}
+.q-solution.show{display:block}
+.answer-label{font-family:var(--mono);font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.answer-text{font-size:14px;color:var(--text);line-height:1.6;background:var(--bg3);border-radius:6px;padding:10px 12px}
+.explain-text{font-size:13px;color:var(--text2);line-height:1.7;margin-top:10px}
+.explain-text code{font-family:var(--mono);font-size:12px;background:var(--bg);padding:2px 6px;border-radius:3px;color:#a8d8ff}
+.trap-warning{background:var(--bg);border:1px solid var(--yellow2);border-radius:6px;padding:8px 12px;margin-top:8px;font-size:12px;color:var(--yellow);font-family:var(--mono)}
+.options-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.option-item{padding:12px 16px;border-radius:8px;border:1px solid var(--border);font-size:14px;color:var(--text2);cursor:pointer;transition:all .2s ease;display:flex;gap:12px;align-items:flex-start}
+.option-item:hover{border-color:var(--accent);color:var(--text);background:var(--bg3);transform:translateX(4px)}
+.options-list.answered .option-item{cursor:default}
+.options-list.answered .option-item:hover:not(.correct):not(.wrong-choice){border-color:var(--border);background:transparent;transform:none;color:var(--text2)}
+.option-item.correct{border-color:var(--green);background:rgba(52,211,153,0.1);color:var(--green);font-weight:600}
+.option-item.wrong-choice{border-color:var(--red);background:rgba(248,113,113,0.1);color:var(--red)}
+.option-label{font-family:var(--mono);font-size:13px;min-width:22px;color:var(--text3);margin-top:2px}
+.empty-state{text-align:center;padding:3rem;color:var(--text3);font-size:14px}
+.mode-bar{display:flex;gap:8px;margin-bottom:1.5rem;align-items:center}
+.mode-info{font-family:var(--mono);font-size:11px;color:var(--text3);margin-left:auto}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+.panel{position:fixed;right:0;top:56px;bottom:0;width:320px;background:var(--bg2);border-left:1px solid var(--border);z-index:50;transform:translateX(100%);transition:transform .25s ease;overflow-y:auto;padding:1rem}
+.panel.open{transform:translateX(0)}
+.panel-header{font-size:14px;font-weight:700;color:var(--text);margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center}
+.panel-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;padding:4px}
+.bookmark-item{padding:10px;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;cursor:pointer;transition:all .15s}
+.bookmark-item:hover{border-color:var(--yellow);background:var(--bg3)}
+.bookmark-item-num{font-family:var(--mono);font-size:10px;color:var(--text3)}
+.bookmark-item-text{font-size:13px;color:var(--text);margin-top:4px;line-height:1.4}
+.bookmark-item-ch{font-family:var(--mono);font-size:10px;color:var(--accent);margin-top:4px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(42,42,63,0.9);backdrop-filter:blur(8px);border:1px solid var(--border2);color:var(--text);padding:12px 24px;border-radius:30px;font-family:var(--mono);font-size:12px;z-index:200;opacity:0;transition:opacity .3s ease;pointer-events:none;box-shadow:0 8px 16px rgba(0,0,0,0.3)}
+.toast.show{opacity:1}
+@media(max-width:768px){.sidebar{display:none}.stats-bar{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">ADV.JAVA <span>exam prep</span></div>
+  <div class="stats-bar">
+    <div class="stat-pill">Total <b id="total-count">0</b></div>
+    <div class="stat-pill">&#x2705; Solved <b id="solved-count">0</b></div>
+    <div class="stat-pill">&#x2B50; Bookmarks <b id="bm-count">0</b></div>
+    <div class="stat-pill">&#x1F4CA; Score <b id="score-pct">0%</b></div>
+  </div>
+  <div class="header-actions">
+    <button class="hbtn" onclick="togglePanel()">&#x2B50; Bookmarks</button>
+    <button class="hbtn" onclick="resetAll()">&#x21BA; Reset</button>
+  </div>
+</header>
+<div class="app">
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-label">Chapters</div>
+  <div id="chapter-nav"></div>
+</nav>
+<main class="main">
+  <div class="filter-bar">
+    <input class="search-input" type="text" placeholder="Search questions..." id="search-input" oninput="filterQuestions()">
+    <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+    <button class="filter-btn" onclick="setFilter('mcq',this)">MCQ</button>
+    <button class="filter-btn" onclick="setFilter('trace',this)">Trace</button>
+    <button class="filter-btn diff-easy" onclick="setDiff('Easy',this)">Easy</button>
+    <button class="filter-btn diff-medium" onclick="setDiff('Medium',this)">Medium</button>
+    <button class="filter-btn diff-hard" onclick="setDiff('Hard',this)">Hard</button>
+    <button class="filter-btn diff-trap" onclick="setDiff('Trap',this)">&#x26A0;&#xFE0F; Trap</button>
+    <button class="filter-btn" onclick="setFilter('bookmarked',this)">&#x2B50; Saved</button>
+    <button class="filter-btn" onclick="setFilter('unsolved',this)">Unsolved</button>
+  </div>
+  <div id="content-area"></div>
+</main>
+</div>
+<div class="panel" id="bm-panel">
+  <div class="panel-header">&#x2B50; Bookmarked Questions<button class="panel-close" onclick="togglePanel()">&#x2715;</button></div>
+  <div id="bm-list"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const CHAPTERS = [
+  {id:"oop",icon:"📦",label:"OOP Basics",
+   desc:"Arrays 1D/2D · Classes & Objects · Encapsulation · Constructors · Methods",
+   tags:["Arrays","Classes","Constructors","Encapsulation","this","Static"],
+   summary:{title:"OOP Basics",points:[
+    "Array: <code>int[] a = new int[5];</code> — valid indices 0 to n-1. Defaults: int=0, double=0.0, boolean=false.",
+    "ArrayIndexOutOfBoundsException: accessing a[5] on size-5 array crashes at runtime.",
+    "2D array main diagonal: elements where <code>i == j</code>.",
+    "Constructor: same name as class, NO return type, called automatically on <code>new</code>.",
+    "<code>this.x = x</code> disambiguates instance variable vs parameter with same name.",
+    "Static methods belong to the class — callable without object. Non-static need instance.",
+    "Encapsulation = private fields + public getters/setters.",
+    "Once you define ANY constructor, Java stops auto-generating the no-arg constructor."
+   ],trick:"Constructor overloading trap: if parent has only a parameterized constructor and child doesn't call super(), it's a compile error!"},
+   questions:[
+    {n:"Q1",text:"Correct array declaration syntax?",type:"MCQ",diff:"Easy",src:"Sheet 1",opts:["int a[5];","int[] a = new int[5];","array int a = new int[5];","int a = new int[5];"],ans:1,explain:"Java arrays: <code>int[] a = new int[5];</code>. Brackets go with the type, <code>new</code> keyword with size."},
+    {n:"Q2",text:"Output of a.length for int[] a = {2,4,6}?",type:"MCQ",diff:"Easy",src:"Sheet 1",opts:["2","3","6","4"],ans:1,explain:"<code>a.length</code> = number of elements = 3, not the last index."},
+    {n:"Q3",text:"Valid indices for an array of size n?",type:"MCQ",diff:"Easy",src:"Lec 1",opts:["1 to n","0 to n","0 to n-1","1 to n-1"],ans:2,explain:"0-indexed: size 5 → indices 0,1,2,3,4. Index 5 = ArrayIndexOutOfBoundsException."},
+    {n:"Q4",text:"Default value of int array elements?",type:"MCQ",diff:"Easy",src:"Sheet 1",opts:["null","1","-1","0"],ans:3,explain:"Primitive numerics default to 0. boolean=false. Object refs=null."},
+    {n:"Q5",text:"Exception thrown for invalid array index?",type:"MCQ",diff:"Medium",src:"Sheet 1",opts:["NullPointerException","IndexOutOfBoundsException","ArrayIndexOutOfBoundsException","IllegalArgumentException"],ans:2,explain:"<code>ArrayIndexOutOfBoundsException</code> at runtime for index < 0 or >= array length."},
+    {n:"Q6",text:"Valid shorthand array initialization?",type:"MCQ",diff:"Easy",src:"Sheet 1",opts:["int[] a = new int{1,2,3};","int a = {1,2,3};","int[] a = {1,2,3};","int[] a = new []{1,2,3};"],ans:2,explain:"<code>int[] a = {1,2,3};</code> — inline initialization, no need for <code>new int[]</code>."},
+    {n:"Q7",text:"Default value of double[] elements?",type:"MCQ",diff:"Medium",src:"Lec 1",opts:["null","1.0","0.0","0"],ans:2,explain:"double arrays default to 0.0 — the double representation of zero."},
+    {n:"Q8",text:"What does a[i][i] access?",type:"MCQ",diff:"Medium",src:"Lec 1",opts:["All elements","The last row","Main diagonal elements","Anti-diagonal"],ans:2,explain:"When row index = column index (i == j) = MAIN DIAGONAL. For 3x3: (0,0),(1,1),(2,2) = 1,5,9."},
+    {n:"Q9",text:"Trace the output:",code:"int[][] a={{1,2,3},{4,5,6},{7,8,9}};\nfor(int i=0;i<3;i++)\n  if(a[i][i]>3)\n    print(a[i][i]+\" \");",type:"Trace",diff:"Hard",src:"Lec 1",opts:["1 5 9","5 9","9","5 9 "],ans:1,explain:"Diagonal: a[0][0]=1(<3 skip), a[1][1]=5(>3 print), a[2][2]=9(>3 print). Output: <code>5 9</code>"},
+    {n:"Q10",text:"Nested loop rows=3, cols=4 — total iterations?",type:"MCQ",diff:"Medium",src:"Lec 1",opts:["7","3","4","12"],ans:3,explain:"rows × cols = 3 × 4 = 12 iterations."},
+    {n:"Q11",text:"Class vs Object relationship?",type:"MCQ",diff:"Easy",src:"Lec 2",opts:["Object is blueprint; class is instance","Class is blueprint; object is instance","They are identical","Class is always abstract"],ans:1,explain:"Class = blueprint. Object = instance. Circle = class; new Circle(5) = object."},
+    {n:"Q12",text:"Create Circle object with radius 3.6?",type:"MCQ",diff:"Easy",src:"Lec 2",opts:["Circle c = Circle(3.6);","Circle c = new Circle[3.6];","Circle c = new Circle(3.6);","new Circle c = Circle(3.6);"],ans:2,explain:"<code>ClassName var = new ClassName(args);</code>"},
+    {n:"Q13",text:"Encapsulation in Java means?",type:"MCQ",diff:"Easy",src:"Lec 2",opts:["Making all methods static","Inheritance between classes","Private fields with public getters/setters","Overriding parent methods"],ans:2,explain:"Encapsulation = data hiding. Private fields + public getters/setters."},
+    {n:"Q14",text:"Most restrictive access modifier?",type:"MCQ",diff:"Easy",src:"Lec 2",opts:["protected","public","private","default"],ans:2,explain:"private: accessible ONLY within same class."},
+    {n:"Q15",text:"Access private field from outside class?",type:"MCQ",diff:"Medium",src:"Lec 2",opts:["Returns null","Returns default","Compile Error","Runtime Exception"],ans:2,explain:"Compile Error — compiler catches access violations immediately."},
+    {n:"Q16",text:"What does a getter method do?",type:"MCQ",diff:"Easy",src:"Lec 2",opts:["Sets a private field","Deletes an object","Returns value of private field","Creates an object"],ans:2,explain:"Getter (accessor) returns value of private field. Example: <code>public double getR() { return r; }</code>"},
+    {n:"Q17",text:"What does a setter method do?",type:"MCQ",diff:"Easy",src:"Lec 2",opts:["Returns private field value","Sets/updates private field","Creates objects","Prints field values"],ans:1,explain:"Setter (mutator) sets/modifies a private field. Example: <code>public void setR(double r) { this.r = r; }</code>"},
+    {n:"Q18",text:"Why use 'this.r = r' in constructor?",type:"MCQ",diff:"Medium",src:"Lec 2",opts:["Optional style","Call another constructor","Disambiguate: this.r=instance field, r=parameter","Copy the object"],ans:2,explain:"When param and field share a name, <code>this.r</code> = instance var, just <code>r</code> = parameter."},
+    {n:"Q19",text:"TRUE statement about constructors?",type:"MCQ",diff:"Easy",src:"Lec 2",opts:["Has return type void","Name can differ from class","No return type, same name as class","Called manually after creation"],ans:2,explain:"Constructor: same name, NO return type (not even void), auto-called on new."},
+    {n:"Q20",text:"Trace the constructor calls:",code:"A() { print('Hello'); }\nA(int x) { print('Hi'+x); }\n\nnew A();\nnew A(5);",type:"Trace",diff:"Medium",src:"Lec 2",opts:["Hello Hi5","Hello Hi 5","HelloHi5","Hi5 Hello"],ans:0,explain:"new A() → 'Hello', new A(5) → 'Hi5'. Output: <code>Hello Hi5</code>"},
+    {n:"Q21",text:"Can a class have multiple constructors?",type:"MCQ",diff:"Medium",src:"Lec 2",opts:["No, only one","Yes, different names only","Yes, if different parameter lists","Yes, but only two"],ans:2,explain:"Constructor overloading: same class, DIFFERENT parameter list (number or types)."},
+    {n:"Q22",text:"Define only parameterized constructor — can you use new ClassName() with no args?",type:"MCQ",diff:"Medium",src:"Lec 2",opts:["Yes, always","Yes, Java auto-generates it","No — must explicitly define no-arg","Yes, uses default values"],ans:2,explain:"Java auto-generates no-arg only if you define NO constructors. Once you write any constructor, you must add no-arg explicitly."},
+    {n:"Q23",text:"What does 'static' mean for a method?",type:"MCQ",diff:"Medium",src:"Lec 1",opts:["Can't be overridden","Belongs to class not instance","Is private","Runs automatically"],ans:1,explain:"Static = class-level. Callable without an object: <code>ClassName.method()</code>"},
+    {n:"Q24",text:"Trace: maximum(3,7,2) — returns max of 3 ints. What returns?",type:"Trace",diff:"Hard",src:"Lec 1",opts:["3","2","7","10"],ans:2,explain:"7 > 3 AND 7 > 2 → return 7."},
+    {n:"Q25",text:"Aggregation in OOP?",type:"MCQ",diff:"Medium",src:"Lec 2",opts:["Strong has-a (engine in car)","Weak has-a (student has ID card)","Is-a relationship","Instantiation"],ans:1,explain:"Aggregation = weak has-a. Objects exist independently."},
+    {n:"Q26",text:"Composition in OOP?",type:"MCQ",diff:"Medium",src:"Lec 2",opts:["Is-a relationship","Weak has-a","Strong has-a — child can't exist without parent","Multiple inheritance"],ans:2,explain:"Composition = strong has-a. Car has Engine — destroy Car, Engine dies too."},
+    {n:"Q27",text:"Trace the loop output:",code:"int[] a={0,2,4,6,8};\nfor(int i=0;i<5;i++)\n  if(i%2==0)\n    print(a[i]+' ');",type:"Trace",diff:"Medium",src:"Lec 1",opts:["0 4 8","0 2 4 6 8","2 6","0 4 8 "],ans:0,explain:"Even indices (i=0,2,4): a[0]=0, a[2]=4, a[4]=8. Output: <code>0 4 8</code>"},
+    {n:"Q28",text:"What does equals() do by default?",type:"MCQ",diff:"Hard",src:"Sheet 3",opts:["Compares field values","Always returns true","Compares object references","Compares string content"],ans:2,explain:"Default equals() compares REFERENCES (addresses). Override it to compare field values."},
+    {n:"Q29",text:"Trace the output of count after 3 objects are created:",code:"static int count=0;\n// each constructor does:\ncount++;",type:"Trace",diff:"Hard",src:"Lec 2",opts:["1","3","0","9"],ans:1,explain:"Static var is SHARED. 3 objects → count increments 3 times = 3."},
+    {n:"Q30",text:"Access private fields of parent class in child class directly?",type:"MCQ",diff:"Medium",src:"Lec 2",opts:["Yes, child can access everything","No — private means private even to child","Yes, using super","Yes, same package"],ans:1,explain:"private = only accessible in declaring class. Child must use parent's public/protected getters."},
+    {n:"Q31",text:"What value does the method see?",code:"class Parent {\n  Parent() { show(); }\n  void show() { print(\"Parent\"); }\n}\nclass Child extends Parent {\n  int val = 5;\n  void show() { print(val); }\n}\nnew Child();",type:"Trace",diff:"Trap",src:"Advanced OOP",opts:["Parent's initialized value","Child's initialized value (5)","0 (default — field not yet initialized)","Compile Error"],ans:2,explain:"⚠️ CLASSIC TRAP: Child's override runs but child's fields aren't initialized yet — they hold DEFAULT values (0 for int). Never call overridable methods in constructors!",trap:true}
+   ]
+  },
+  {id:"inheritance",icon:"🔗",label:"Inheritance",
+   desc:"extends · super() · super.method() · access modifiers · constructor chaining",
+   tags:["extends","super()","super.method()","protected","private","upcasting"],
+   summary:{title:"Inheritance",points:[
+    "Syntax: <code>class Child extends Parent { }</code>",
+    "Parent constructor ALWAYS runs first — even before child's body.",
+    "<code>super()</code> calls parent constructor — must be FIRST statement in child constructor.",
+    "<code>super.methodName()</code> calls parent version of overridden method.",
+    "Private fields inherited but NOT directly accessible in child — use getters.",
+    "protected = same class + subclasses + same package.",
+    "Upcasting: <code>Parent ref = new Child();</code> — always valid (implicit).",
+    "Downcasting: <code>Child ref = (Child) parentRef;</code> — can throw ClassCastException.",
+    "Java supports SINGLE inheritance only."
+   ],trick:"Super() is implicit: if not written, Java inserts super() (no-arg) automatically. If parent has no no-arg constructor → Compile Error!"},
+   questions:[
+    {n:"Q1",text:"Keyword for inheritance?",type:"MCQ",diff:"Easy",src:"Lec 2",opts:["implements","inherits","extends","derives"],ans:2,explain:"<code>extends</code>. Dog IS-A Animal."},
+    {n:"Q2",text:"Parent class is also called?",type:"MCQ",diff:"Easy",src:"Lec 2",opts:["subclass","derived class","superclass","child class"],ans:2,explain:"Parent = superclass = base class. Child = subclass = derived class."},
+    {n:"Q3",text:"When creating child object, which constructor runs FIRST?",type:"MCQ",diff:"Medium",src:"Lec 2",opts:["Child constructor","Parent constructor","Both simultaneously","Whichever is called"],ans:1,explain:"ALWAYS parent first. Implicit super() ensures parent is fully initialized first."},
+    {n:"Q4",text:"Where must super() appear in child constructor?",type:"MCQ",diff:"Medium",src:"Lec 2",opts:["Anywhere","Last statement","First statement","After field initialization"],ans:2,explain:"super() must be the FIRST statement. Anything before it → Compile Error."},
+    {n:"Q5",text:"Can child access public members of parent?",type:"MCQ",diff:"Easy",src:"Lec 2",opts:["No","Only with super","Yes, directly","Only same package"],ans:2,explain:"Child accesses public AND protected members directly."},
+    {n:"Q6",text:"Can parent reference access child-only methods?",type:"MCQ",diff:"Medium",src:"Lec 2",opts:["Yes","Yes with casting","No — parent reference only sees parent methods","Yes, polymorphism"],ans:2,explain:"Parent reference only sees parent's methods. Must downcast to access child-specific."},
+    {n:"Q7",text:"Are private members inherited?",type:"MCQ",diff:"Medium",src:"Lec 2",opts:["No","Yes, but not directly accessible","Yes, fully accessible","Only same package"],ans:1,explain:"Private members ARE inherited (exist in child object) but NOT directly accessible. Child must use parent's public/protected getters."},
+    {n:"Q8",text:"What is the result of this code?",code:"class Parent { private int x; }\nclass Child extends Parent {\n  void m() { x=5; }\n}",type:"MCQ",diff:"Hard",src:"Lec 2",opts:["Works fine","Runtime error","Compile Error","x gets 5"],ans:2,explain:"Compile Error! x is private in Parent — inaccessible even in Child."},
+    {n:"Q9",text:"Call parent version of overridden method from child?",type:"MCQ",diff:"Medium",src:"Lec 3",opts:["parent.method()","this.method()","super.method()","base.method()"],ans:2,explain:"<code>super.methodName()</code> calls parent's version explicitly."},
+    {n:"Q10",text:"Cylinder extends Circle — how does Cylinder init Circle's private radius?",type:"MCQ",diff:"Medium",src:"Lec 3",opts:["this.radius=r;","super.radius=r;","super(r);","Circle(r);"],ans:2,explain:"<code>super(r)</code> passes value to Circle's constructor, which sets the private field."},
+    {n:"Q11",text:"'protected' means?",type:"MCQ",diff:"Easy",src:"Lec 2",opts:["Same class only","Same class + subclasses + same package","Public everywhere","Only same package"],ans:1,explain:"protected: 1) Same class, 2) Subclasses, 3) Same package."},
+    {n:"Q12",text:"What is the result of instantiating Dog?",code:"// Animal has only a no-arg constructor\nclass Dog extends Animal {\n  Dog() { super(5); }\n}",type:"MCQ",diff:"Hard",src:"Lec 2",opts:["Works, default values","Compile Error — no matching parent constructor","Runtime Exception","Creates Dog with defaults"],ans:1,explain:"Compile Error! super(5) looks for Animal(int) which doesn't exist."},
+    {n:"Q13",text:"Fruits f = new Apple(); — Apple extends Fruits. Valid?",type:"MCQ",diff:"Medium",src:"Lec 3",opts:["No — type mismatch","Yes — valid upcasting","Yes, only at runtime","No — needs cast"],ans:1,explain:"Valid! UPCASTING — storing child in parent reference. Apple IS-A Fruits."},
+    {n:"Q14",text:"Apple a = new Fruits(); — Apple extends Fruits. Valid?",type:"MCQ",diff:"Medium",src:"Lec 3",opts:["Yes","Yes with cast","No — Fruits is not necessarily an Apple","Yes, polymorphism"],ans:2,explain:"Compile Error! Cannot assign parent object to child reference. Not every fruit is an apple!"},
+    {n:"Q15",text:"Trace: A→B→C chain, each prints own name in constructor. new C() output?",type:"Trace",diff:"Medium",src:"Lec 2",opts:["C B A","A B C","C","B C"],ans:1,explain:"Always top-down: A → B → C. Output: <code>A B C</code>"},
+    {n:"Q16",text:"Trace the output of new B().m():",code:"class A { int x=10; }\nclass B extends A {\n  int x=20;\n  void m() { print(x + \" \" + super.x); }\n}",type:"Trace",diff:"Medium",src:"Lec 2",opts:["10 20","20 10","20 20","10 10"],ans:1,explain:"x = B's x=20. super.x = A's x=10. Output: <code>20 10</code>"},
+    {n:"Q17",text:"Java supports multiple class inheritance?",type:"MCQ",diff:"Easy",src:"Lec 2",opts:["Yes","Yes with keyword","No — single only","Only Java 8+"],ans:2,explain:"Single inheritance only. Multiple interfaces allowed. Avoids diamond problem."},
+    {n:"Q18",text:"Trace: A obj=new B(); obj.m(); — B overrides m(). Which runs?",type:"Trace",diff:"Hard",src:"Lec 3",opts:["A's m()","B's m()","Compile Error","Both"],ans:1,explain:"RUNTIME POLYMORPHISM: actual object is B → JVM calls B's m(). Dynamic dispatch."},
+    {n:"Q19",text:"What does new B() output?",code:"class A {\n  int val=100;\n  A() { show(); }\n  void show() { print(val); }\n}\nclass B extends A {\n  int val=200;\n  void show() { print(val); }\n}",type:"Trace",diff:"Trap",src:"OOP Trap",opts:["100","200","0","Compile Error"],ans:2,explain:"⚠️TRAP: new B() → A's constructor → calls show() → polymorphism → B's show() → B's val NOT YET INITIALIZED → val=0 (default). Output: 0!",trap:true},
+    {n:"Q20",text:"class B extends A implements C — correct?",type:"MCQ",diff:"Medium",src:"Lec 4",opts:["implements before extends","Reversed","extends must come before implements","Either order"],ans:2,explain:"<code>extends</code> MUST come before <code>implements</code>."},
+    {n:"Q21",text:"Trace the output of new B().m():",code:"class A { int x=5; }\nclass B extends A {\n  void m() {\n    int x=10;\n    print(x + \" \" + super.x + \" \" + this.x);\n  }\n}",type:"Trace",diff:"Hard",src:"Lec 2",opts:["10 5 10","5 10 5","10 5 5","5 5 10"],ans:2,explain:"x(local)=10, super.x(A's)=5, this.x(B inherited from A)=5. Output: <code>10 5 5</code>"},
+    {n:"Q22",text:"Aggregation vs Composition?",type:"MCQ",diff:"Medium",src:"Lec 2",opts:["No difference","Aggregation=strong, Composition=weak","Aggregation=weak has-a, Composition=strong has-a","Both IS-A"],ans:2,explain:"Aggregation: weak has-a (Person has Address, both independent). Composition: strong has-a (Car has Engine — Engine dies with Car)."}
+   ]
+  },
+  {id:"poly",icon:"🔀",label:"Polymorphism",
+   desc:"Overloading · Overriding · @Override · Runtime Dispatch · instanceof",
+   tags:["Overloading","Overriding","@Override","instanceof","upcasting","downcasting"],
+   summary:{title:"Polymorphism",points:[
+    "Overloading: SAME name, DIFFERENT parameter list. Resolved at COMPILE time.",
+    "Overriding: Child redefines parent method with EXACT same signature. Resolved at RUNTIME.",
+    "<code>@Override</code> annotation: optional but compiler checks you're actually overriding.",
+    "Return type alone CANNOT distinguish overloads → Compile Error.",
+    "Static and private methods CANNOT be overridden.",
+    "Runtime dispatch: A ref = new B() → B's method runs (actual type wins).",
+    "<code>instanceof</code>: returns true if obj is that class or subclass.",
+    "Compile check: reference type. Runtime: actual object type."
+   ],trick:"Compiler uses REFERENCE TYPE to check if method exists. JVM uses ACTUAL OBJECT TYPE to decide WHICH version runs."},
+   questions:[
+    {n:"Q1",text:"Two types of polymorphism in Java?",type:"MCQ",diff:"Easy",src:"Lec 3",opts:["Casting and Converting","Overloading and Overriding","Static and Dynamic","Compile and Runtime"],ans:1,explain:"Method Overloading (compile-time) and Method Overriding (runtime)."},
+    {n:"Q2",text:"Method overloading requires?",type:"MCQ",diff:"Easy",src:"Lec 3",opts:["Same params different names","Same name different param list","Same return type","Different class hierarchy"],ans:1,explain:"SAME name + DIFFERENT parameter list (count or type)."},
+    {n:"Q3",text:"m1(), m1(int,int), m1(double,double), m1(int,int,int) — m1(3,7) calls?",type:"MCQ",diff:"Medium",src:"Lec 3",opts:["m1()","m1(int,int)","m1(double,double)","m1(int,int,int)"],ans:1,explain:"Two ints → matches m1(int,int) exactly."},
+    {n:"Q4",text:"m1(3.0,7.0) calls?",type:"MCQ",diff:"Medium",src:"Lec 3",opts:["m1(int,int)","m1()","m1(double,double)","m1(int,int,int)"],ans:2,explain:"Two doubles → m1(double,double)."},
+    {n:"Q5",text:"Overload methods by return type only?",type:"MCQ",diff:"Hard",src:"Lec 3",opts:["Yes","Yes in Java 8+","No — Compile Error","Yes if different classes"],ans:2,explain:"NO! Parameter list MUST differ. Return type alone → Compile Error."},
+    {n:"Q6",text:"Method overriding requires?",type:"MCQ",diff:"Easy",src:"Lec 3",opts:["Different param list","Same name different params","Exact same signature in child","Static methods"],ans:2,explain:"EXACT same signature (name + params + return type or covariant)."},
+    {n:"Q7",text:"What does @Override do?",type:"MCQ",diff:"Medium",src:"Lec 3",opts:["Makes method faster","Forces static","Compiler verifies you're overriding","Required for all methods"],ans:2,explain:"Optional but lets compiler verify: if parent has no such method → Compile Error."},
+    {n:"Q8",text:"What is the output?",code:"A a = new A();\na.m1();\n// A prints 'green', B overrides to print 'White'",type:"Trace",diff:"Medium",src:"Lec 3",opts:["White","green","White green","Compile Error"],ans:1,explain:"Object IS A → A's m1() runs. Output: <code>green</code>"},
+    {n:"Q9",text:"What is the output?",code:"A a = new B();\na.m1();\n// A prints 'green', B overrides to print 'White'",type:"Trace",diff:"Hard",src:"Lec 3",opts:["green","White","Compile Error","green then White"],ans:1,explain:"RUNTIME POLYMORPHISM: reference=A but object=B → JVM calls B's m1() → 'White'. Dynamic dispatch!"},
+    {n:"Q10",text:"What happens here?",code:"A a = new B();\na.m3();\n// m3() exists ONLY in B",type:"MCQ",diff:"Hard",src:"Lec 3",opts:["Runs B's m3()","Null","Runtime Error","Compile Error"],ans:3,explain:"COMPILE ERROR: reference is type A. Compiler only sees A's methods. m3() not in A."},
+    {n:"Q11",text:"Fruit f = new Apple(); Apple a = f; — valid?",type:"MCQ",diff:"Medium",src:"Lec 3",opts:["Yes","Yes with @Override","No — needs explicit cast: (Apple)f","No, impossible"],ans:2,explain:"Downcasting needs explicit cast: <code>Apple a = (Apple)f;</code>"},
+    {n:"Q12",text:"What does instanceof check?",type:"MCQ",diff:"Medium",src:"Lec 3",opts:["If null","Object memory size","If object is given type (or subtype)","Class name string"],ans:2,explain:"<code>obj instanceof ClassName</code> = true if obj is that class or any subclass."},
+    {n:"Q13",text:"Dog d = new Dog(); (d instanceof Animal) — Dog extends Animal. Result?",type:"MCQ",diff:"Medium",src:"Lec 3",opts:["false","true","Compile Error","null"],ans:1,explain:"Dog IS-A Animal → true. instanceof checks IS-A relationship."},
+    {n:"Q14",text:"Can static method be overridden?",type:"MCQ",diff:"Medium",src:"Java standard",opts:["Yes","Yes with @Override","No — resolved at compile time","Only in abstract"],ans:2,explain:"Static methods are HIDDEN not overridden. No runtime polymorphism for static."},
+    {n:"Q15",text:"Can private method be overridden?",type:"MCQ",diff:"Medium",src:"Java standard",opts:["Yes","Yes same package","No — invisible to child","Only with super"],ans:2,explain:"Private methods are invisible to child classes → cannot be overridden."},
+    {n:"Q16",text:"Overloading resolved at ___; Overriding at ___.",type:"MCQ",diff:"Medium",src:"Lec 3",opts:["Runtime; Compile","Compile; Runtime","Both compile","Both runtime"],ans:1,explain:"Overloading = compile-time. Overriding = runtime."},
+    {n:"Q17",text:"What is the output of new B().call()?",code:"class A {\n  void m() { print(\"A\"); }\n  void call() { m(); }\n}\nclass B extends A {\n  void m() { print(\"B\"); }\n}",type:"Trace",diff:"Trap",src:"Lec 3",opts:["A","B","A B","Compile Error"],ans:1,explain:"⚠️TRAP: call() is in A but calls m() → polymorphism → actual object is B → B's m() runs → 'B'. Even methods in A dispatch dynamically!",trap:true},
+    {n:"Q18",text:"Dog d=new Dog(); Animal a=d; Cat c=(Cat)a; — result?",type:"MCQ",diff:"Hard",src:"Lec 3",opts:["Compile Error","Works fine","ClassCastException at runtime","null"],ans:2,explain:"ClassCastException RUNTIME! Actual object is Dog, casting to Cat (siblings). Use instanceof first!"},
+    {n:"Q19",text:"Trace the output of B b = new B(); b.m1();",code:"class A {\n  A() { print(\"Hello \"); }\n  void m1() { print(\"green \"); }\n}\nclass B extends A {\n  B() { print(\"hero \"); }\n  void m1() { print(\"White \"); }\n}",type:"Trace",diff:"Medium",src:"Lec 3",opts:["Hello hero White","White","Hello White","hero White"],ans:0,explain:"new B() → super() → 'Hello' → 'hero'. b.m1() → B overrides → 'White'. Output: <code>Hello hero White</code>"}
+   ]
+  },
+  {id:"abstract",icon:"🔷",label:"Abstract & Interface",
+   desc:"abstract keyword · interface · implements · multiple interfaces · differences",
+   tags:["abstract","interface","implements","public static final","IS-A"],
+   summary:{title:"Abstract & Interface",points:[
+    "Abstract class: at least one abstract method, NO body. Cannot instantiate.",
+    "Abstract method: <code>public abstract void method();</code> — semicolon, no braces!",
+    "Concrete subclass MUST implement ALL abstract methods, or also be abstract.",
+    "Abstract class CAN have constructor (used via super() from child).",
+    "Interface: ALL methods implicitly abstract. ALL fields <code>public static final</code>.",
+    "Class uses <code>implements</code> for interfaces, <code>extends</code> for classes.",
+    "ONE class can implement MULTIPLE interfaces."
+   ],trick:"Abstract class vs Interface: use abstract class when sharing STATE (fields). Use interface when UNRELATED classes share behavior (like Flyable for Bird and Plane)."},
+   questions:[
+    {n:"Q1",text:"Abstract class must have?",type:"MCQ",diff:"Easy",src:"Lec 4",opts:["Only static methods","At least one abstract method","All methods abstract","No constructors"],ans:1,explain:"At least one abstract method (no body, ends in semicolon). Can also have concrete methods."},
+    {n:"Q2",text:"Correct abstract method syntax?",type:"MCQ",diff:"Easy",src:"Lec 4",opts:["public void m(){}","abstract void m(){}","public abstract void m();","abstract void m()"],ans:2,explain:"<code>public abstract void m();</code> — SEMICOLON, no body!"},
+    {n:"Q3",text:"new AbstractClass() — what happens?",type:"MCQ",diff:"Easy",src:"Lec 4",opts:["Creates object","Runs abstract as empty","Compile Error","Runtime Exception"],ans:2,explain:"Cannot instantiate abstract classes → Compile Error."},
+    {n:"Q4",text:"Class extends abstract but doesn't implement all abstract methods?",type:"MCQ",diff:"Medium",src:"Lec 4",opts:["Run empty","Compile Error — implement all OR be abstract","Runtime Error","Works with nulls"],ans:1,explain:"Either implement ALL abstract methods, OR declare class abstract."},
+    {n:"Q5",text:"What is the result if the class is not declared abstract?",code:"class A {\n  abstract void f();\n}",type:"MCQ",diff:"Medium",src:"Sheet 4",opts:["Works","f() becomes concrete","Compile Error — class must be abstract","Runtime Error"],ans:2,explain:"If class has abstract method, CLASS must also be abstract."},
+    {n:"Q6",text:"Can abstract class have constructor?",type:"MCQ",diff:"Easy",src:"Lec 4",opts:["No","Yes — called via super() from child","Yes — directly","Only if all concrete"],ans:1,explain:"YES! Abstract class constructors are called via super() from child."},
+    {n:"Q7",text:"Abstract class can have both abstract and concrete methods?",type:"MCQ",diff:"Medium",src:"Lec 4",opts:["No — all abstract","No — all concrete","Yes — mix allowed","Only Java 8+"],ans:2,explain:"Yes! Abstract = partial implementation. Mix of concrete and abstract."},
+    {n:"Q8",text:"Interface methods by default?",type:"MCQ",diff:"Easy",src:"Lec 4",opts:["public static","private final","public abstract","protected abstract"],ans:2,explain:"Interface methods are implicitly <code>public abstract</code>."},
+    {n:"Q9",text:"Keyword to implement interface?",type:"MCQ",diff:"Easy",src:"Lec 4",opts:["extends","inherits","uses","implements"],ans:3,explain:"<code>implements</code> for interfaces. <code>extends</code> for classes."},
+    {n:"Q10",text:"Can class implement multiple interfaces?",type:"MCQ",diff:"Easy",src:"Lec 4",opts:["No — only one","Yes — unlimited","Max two","Only Java 11+"],ans:1,explain:"YES! Multiple interfaces: <code>class Eagle extends Bird implements Flyable, Swimmable { }</code>"},
+    {n:"Q11",text:"Interface fields are implicitly?",type:"MCQ",diff:"Medium",src:"Lec 4",opts:["private","protected","public static final","public abstract"],ans:2,explain:"Interface fields = <code>public static final</code> constants. Cannot be changed."},
+    {n:"Q12",text:"Can interface extend another interface?",type:"MCQ",diff:"Medium",src:"Lec 4",opts:["No","Yes using implements","Yes using extends","Yes using inherits"],ans:2,explain:"Interface→interface: use <code>extends</code>. <code>interface Flyable extends Moveable {}</code>"},
+    {n:"Q13",text:"NOT a difference between abstract class and interface?",type:"MCQ",diff:"Hard",src:"Lec 4",opts:["Abstract can have concrete; Interface can't (pre-Java 8)","Interface allows multiple implementation","Abstract needs keyword","Both can be instantiated directly"],ans:3,explain:"NEITHER can be instantiated! That's a SIMILARITY not a difference."},
+    {n:"Q14",text:"Trace the output of new Dog().sound();",code:"abstract class Animal {\n  Animal() { print(\"Animal \"); }\n  abstract void sound();\n}\nclass Dog extends Animal {\n  Dog() { print(\"Dog \"); }\n  void sound() { print(\"Woof\"); }\n}",type:"Trace",diff:"Medium",src:"Lec 4",opts:["Woof","Animal Dog Woof","Animal Woof","Dog Woof Animal"],ans:1,explain:"new Dog() → 'Animal' → 'Dog'. .sound() → 'Woof'. Output: <code>Animal Dog Woof</code>"},
+    {n:"Q15",text:"Interface Circle implements Shape — s.setr(5) where setr() not in Shape. Result?",type:"MCQ",diff:"Hard",src:"Lec 4",opts:["Works","78.5","Compile Error — Shape has no setr()","25"],ans:2,explain:"s is type Shape → only Shape methods callable. setr() not in Shape → Compile Error!"},
+    {n:"Q16",text:"Trace the output:",code:"Circle c = new Circle();\nc.setr(3.0);\nprint(c.Area());\n// Area() = 3.14 * r * r",type:"Trace",diff:"Medium",src:"Lec 4",opts:["9","28.26","3.14","9.42"],ans:1,explain:"3.14 × 3.0 × 3.0 = 28.26"}
+   ]
+  },
+  {id:"exceptions",icon:"🚨",label:"Exception Handling",
+   desc:"try/catch/finally · throws/throw · checked vs unchecked · custom exceptions",
+   tags:["try","catch","finally","throws","throw","checked","unchecked","custom"],
+   summary:{title:"Exception Handling",points:[
+    "<code>try</code>: code that might throw. <code>catch</code>: handle exception. <code>finally</code>: ALWAYS runs (even with return!).",
+    "Checked: must handle (IOException, FileNotFoundException). Unchecked: optional (ArithmeticException, NPE).",
+    "Hierarchy: Throwable → Exception + RuntimeException (unchecked) + Error.",
+    "<code>throw new ExceptionType()</code>: manually throw in method body.",
+    "<code>throws ExceptionType</code>: declare in method signature.",
+    "Catch order: SPECIFIC BEFORE GENERAL or Compile Error.",
+    "Custom: <code>class MyEx extends Exception { MyEx(String m){super(m);} }</code>",
+    "<code>System.exit()</code> SKIPS finally block."
+   ],trick:"finally always runs even if there's a return in try. Order: try → (exception) → (catch) → finally → after."},
+   questions:[
+    {n:"Q1",text:"What is an exception?",type:"MCQ",diff:"Easy",src:"Lec 5",opts:["Syntax error","Compile error","Runtime event disrupting normal flow","Warning message"],ans:2,explain:"Exception = unexpected RUNTIME event. Examples: divide by zero, null pointer, array out of bounds."},
+    {n:"Q2",text:"int y = 9/0 throws?",type:"MCQ",diff:"Easy",src:"Lec 5",opts:["NullPointerException","NumberFormatException","ArithmeticException","DivisionByZeroException"],ans:2,explain:"<code>ArithmeticException: / by zero</code> — unchecked runtime exception."},
+    {n:"Q3",text:"Purpose of try-catch?",type:"MCQ",diff:"Easy",src:"Lec 5",opts:["Speed up code","Prevent compile errors","Handle runtime exceptions gracefully","Replace if-else"],ans:2,explain:"try-catch = handle exceptions, run recovery code instead of crashing."},
+    {n:"Q4",text:"Does finally always execute?",type:"MCQ",diff:"Medium",src:"Lec 5",opts:["Only when exception","Only no exception","Always — exception or not","Only if catch doesn't handle"],ans:2,explain:"finally ALWAYS runs. Exception: System.exit() and JVM crash."},
+    {n:"Q5",text:"Trace the output:",code:"try {\n  print(\"try \");\n  throw new Exception();\n} catch(Exception e) {\n  print(\"catch \");\n} finally {\n  print(\"finally \");\n}\nprint(\"after\");",type:"Trace",diff:"Medium",src:"Lec 5",opts:["try catch after","try catch finally","try catch finally after","try finally"],ans:2,explain:"Exception thrown → catch → finally → after. Output: <code>try catch finally after</code>"},
+    {n:"Q6",text:"Same structure, NO exception thrown. Output?",type:"Trace",diff:"Medium",src:"Lec 5",opts:["try finally after","try catch finally after","try catch after","try after"],ans:0,explain:"No exception → catch SKIPPED → finally still runs → after. Output: <code>try finally after</code>"},
+    {n:"Q7",text:"Checked exception?",type:"MCQ",diff:"Medium",src:"Lec 5",opts:["Unchecked at runtime","Must be handled at compile time","Optional","Same as Error"],ans:1,explain:"Checked: compiler FORCES you to handle (try-catch or throws). Examples: IOException, FileNotFoundException."},
+    {n:"Q8",text:"Which is unchecked?",type:"MCQ",diff:"Easy",src:"Lec 5",opts:["IOException","FileNotFoundException","ArithmeticException","ClassNotFoundException"],ans:2,explain:"ArithmeticException = RuntimeException = unchecked."},
+    {n:"Q9",text:"Root of all exceptions?",type:"MCQ",diff:"Easy",src:"Lec 5",opts:["Exception","Error","RuntimeException","Throwable"],ans:3,explain:"Throwable is the root: Exception (recoverable) + Error (usually not)."},
+    {n:"Q10",text:"throws vs throw?",type:"MCQ",diff:"Medium",src:"Lec 5",opts:["No difference","throws=manual throw; throw=declaration","throws=signature declaration; throw=manually throw in body","Both in signature"],ans:2,explain:"<code>throws</code>: in method signature. <code>throw</code>: in method body to actually throw."},
+    {n:"Q11",text:"Correct catch order for multiple catches?",type:"MCQ",diff:"Hard",src:"Lec 5",opts:["General first","Any order","Specific FIRST, general last","Alphabetical"],ans:2,explain:"SPECIFIC before GENERAL! Exception first catches everything → specific below unreachable → Compile Error."},
+    {n:"Q12",text:"Trace the output:",code:"try {\n  print(1);\n  print(2);\n  throw ex;\n  print(3);\n} catch(Exception e) {\n  print(4);\n}\nprint(5);",type:"Trace",diff:"Medium",src:"Lec 5",opts:["1 2 4 5","1 2 3 4 5","1 4 5","2 4 5"],ans:0,explain:"1→2→throw→catch→4→5. print(3) never runs. Output: <code>1 2 4 5</code>"},
+    {n:"Q13",text:"Custom exception creation?",type:"MCQ",diff:"Medium",src:"Lec 5",opts:["class MyEx implements Exception","class MyEx throws Exception","class MyEx extends Exception{MyEx(String m){super(m);}}","@CustomException class MyEx"],ans:2,explain:"Extend Exception. Pass message to super(). Use: <code>throw new MyEx('msg');</code>"},
+    {n:"Q14",text:"System.exit(1) skips finally?",type:"MCQ",diff:"Hard",src:"Lec 5",opts:["No — finally always runs","Yes — terminates JVM","Only some JVMs","Depends on exit code"],ans:1,explain:"System.exit() terminates JVM immediately → finally DOES NOT run."},
+    {n:"Q15",text:"What happens when this block executes?",code:"try {\n  return 1;\n} finally {\n  print(\"finally\");\n}",type:"Trace",diff:"Trap",src:"Lec 5",opts:["Returns 1 immediately","Prints 'finally' then returns 1","Compile Error","finally runs but return ignored"],ans:1,explain:"⚠️TRAP: finally runs BEFORE the return! try → return prepared → finally → THEN returns. Output: 'finally' printed, returns 1.",trap:true},
+    {n:"Q16",text:"Trace the output:",code:"try {\n  int[] a = new int[3];\n  a[5] = 10;\n} catch(ArithmeticException e) {\n  print(\"AE\");\n} catch(ArrayIndexOutOfBoundsException e) {\n  print(\"AIOOBE\");\n}",type:"Trace",diff:"Hard",src:"Lec 5",opts:["AE","AIOOBE","Both","Crashes"],ans:1,explain:"a[5] on size-3 → ArrayIndexOutOfBoundsException → second catch → 'AIOOBE'."},
+    {n:"Q17",text:"⚠️TRAP: Exception propagation — C throws, B doesn't catch, A catches. Output?",type:"Trace",diff:"Trap",src:"Lec 5",opts:["Caught in A","B starts C starts Caught in A","Error","C starts B starts Caught in A"],ans:1,explain:"⚠️TRAP: B starts → C starts → C throws → propagates up → B doesn't catch → propagates to A → caught. Output: B starts C starts Caught in A",trap:true}
+   ]
+  },
+  {id:"io",icon:"📂",label:"Text I/O",
+   desc:"File class · Scanner · PrintWriter · FileWriter · append mode",
+   tags:["File","Scanner","PrintWriter","FileWriter","hasNext","close()","append"],
+   summary:{title:"Text I/O",points:[
+    "<code>new File('data.txt')</code> — path wrapper. Does NOT create the file.",
+    "Read: <code>Scanner sc = new Scanner(new File('data.txt'));</code> — throws FileNotFoundException.",
+    "Write: <code>PrintWriter pw = new PrintWriter('output.txt');</code> — OVERWRITES by default!",
+    "Append: <code>new PrintWriter(new FileWriter('file.txt', true))</code> — true = append.",
+    "<code>close()</code> flushes buffer — CRITICAL or data may not reach disk!",
+    "<code>hasNext()</code>: more tokens? <code>nextLine()</code>: full line. <code>next()</code>: one word."
+   ],trick:"Always call close() after writing! PrintWriter buffers data — without close(), data may never reach disk. COMMON EXAM TRAP."},
+   questions:[
+    {n:"Q1",text:"new File('data.txt') does?",type:"MCQ",diff:"Easy",src:"Lec 5",opts:["Creates data.txt","Opens for reading","Creates File object — doesn't create file","Reads all content"],ans:2,explain:"<code>new File('path')</code> = FILE OBJECT (path reference). Doesn't create or open the file."},
+    {n:"Q2",text:"Class to read from text file?",type:"MCQ",diff:"Easy",src:"Lec 5",opts:["PrintWriter","FileReader","Scanner","BufferedWriter"],ans:2,explain:"<code>Scanner sc = new Scanner(new File('data.txt'));</code>"},
+    {n:"Q3",text:"FileNotFoundException must be?",type:"MCQ",diff:"Medium",src:"Lec 5",opts:["Ignored","Only caught at runtime","Handled — checked exception","Optional"],ans:2,explain:"FileNotFoundException = CHECKED. Compiler forces you to handle it."},
+    {n:"Q4",text:"Class to write to text file?",type:"MCQ",diff:"Easy",src:"Lec 5",opts:["Scanner","FileReader","BufferedReader","PrintWriter"],ans:3,explain:"<code>PrintWriter pw = new PrintWriter('output.txt');</code>"},
+    {n:"Q5",text:"PrintWriter does to existing file by default?",type:"MCQ",diff:"Medium",src:"Lec 5",opts:["Appends","Does nothing","Overwrites (clears content)","Backup"],ans:2,explain:"Default = OVERWRITE. Use FileWriter(file, true) to append."},
+    {n:"Q6",text:"Why is close() critical after writing?",type:"MCQ",diff:"Medium",src:"Lec 5",opts:["Delete file","Free memory","Flushes buffer — ensures data written to disk","Unlock"],ans:2,explain:"Without close()/flush(), buffered data may NEVER reach disk!"},
+    {n:"Q7",text:"hasNext() returns?",type:"MCQ",diff:"Medium",src:"Lec 5",opts:["The next token","true if more tokens exist","File size","Next line"],ans:1,explain:"<code>scanner.hasNext()</code> = true if more tokens. Used in: <code>while(sc.hasNext()) { }</code>"},
+    {n:"Q8",text:"Append mode syntax?",type:"MCQ",diff:"Hard",src:"Lec 5",opts:["new PrintWriter('f.txt',true)","new PrintWriter(new FileWriter('f.txt',true))","new AppendWriter('f.txt')","new PrintWriter.append('f.txt')"],ans:1,explain:"<code>new PrintWriter(new FileWriter('file.txt', true))</code> — FileWriter true = append."},
+    {n:"Q9",text:"⚠️TRAP: pw.print('Hello'); without close() — is 'Hello' in file?",type:"Trace",diff:"Trap",src:"Lec 5",opts:["Yes always","No — no close(), data may not flush","Yes immediately","Depends on OS"],ans:1,explain:"⚠️TRAP: Without pw.close() or pw.flush(), 'Hello' stays in BUFFER and may never reach disk!",trap:true},
+    {n:"Q10",text:"next() vs nextLine()?",type:"MCQ",diff:"Easy",src:"Lec 5",opts:["No difference","next()=char; nextLine()=word","next()=one token (word); nextLine()=entire line","next()=int; nextLine()=string"],ans:2,explain:"next(): one word/token. nextLine(): entire line including spaces."}
+   ]
+  },
+  {id:"javafx",icon:"🖼️",label:"JavaFX GUI",
+   desc:"Application · Stage · Scene · Nodes · Panes · Controls · Color · ImageView",
+   tags:["Stage","Scene","Node","Pane","Application","start()","launch()","StackPane"],
+   summary:{title:"JavaFX GUI",points:[
+    "Evolution: AWT → Swing → JavaFX (from Java 8). AWT = Abstract Windows Toolkit.",
+    "Every JavaFX app: <code>class MyApp extends Application { public void start(Stage s) { } }</code>",
+    "Hierarchy: Stage (window) → Scene → Panes → Nodes.",
+    "<code>launch(args)</code> starts app → JVM creates instance → calls <code>start()</code>.",
+    "Node can be in ONLY ONE pane — adding to second throws exception.",
+    "<code>pane.getChildren().add(node)</code> — adds node to pane.",
+    "Color values: 0.0 to 1.0. Color(1,0,0,1) = pure red, fully opaque.",
+    "ImageView displays images. One Image shared by multiple ImageViews."
+   ],trick:"Node single-parent rule: each node can have ONE parent only. Adding to second container removes from first (or throws IllegalArgumentException)."},
+   questions:[
+    {n:"Q1",text:"First Java GUI library?",type:"MCQ",diff:"Easy",src:"Lec 5 JavaFX",opts:["Swing","JavaFX","SWT","AWT"],ans:3,explain:"AWT (Abstract Windows Toolkit) = Java's first GUI library."},
+    {n:"Q2",text:"AWT stands for?",type:"MCQ",diff:"Easy",src:"Lec 5 JavaFX",opts:["Automated Widget Toolkit","Abstract Window Toolkit","Advanced Windows Technology","Adaptive Window Tools"],ans:1,explain:"AWT = Abstract Windows Toolkit. Legacy."},
+    {n:"Q3",text:"JavaFX app class must extend?",type:"MCQ",diff:"Easy",src:"Lec 5 JavaFX",opts:["JFrame","Applet","Application","JPanel"],ans:2,explain:"Extend <code>javafx.application.Application</code>, override <code>start(Stage)</code>."},
+    {n:"Q4",text:"Stage in JavaFX?",type:"MCQ",diff:"Easy",src:"Lec 5 JavaFX",opts:["Type of pane","Visual node","A window","Scene graph element"],ans:2,explain:"Stage = the window."},
+    {n:"Q5",text:"JavaFX hierarchy order?",type:"MCQ",diff:"Easy",src:"Lec 5 JavaFX",opts:["Scene→Stage→Nodes","Node→Scene→Stage","Stage→Scene→Nodes","Pane→Stage→Scene"],ans:2,explain:"Stage → Scene → Nodes."},
+    {n:"Q6",text:"primaryStage.show() does?",type:"MCQ",diff:"Medium",src:"Lec 5 JavaFX",opts:["Creates window","Initializes nodes","Adds scene","Makes window VISIBLE"],ans:3,explain:"show() = makes window visible."},
+    {n:"Q7",text:"launch() does?",type:"MCQ",diff:"Medium",src:"Lec 5 JavaFX",opts:["Shows stage","Creates nodes","Starts JavaFX application thread","Loads FXML"],ans:2,explain:"launch() starts JavaFX runtime, creates Application instance, calls start()."},
+    {n:"Q8",text:"Node can be in how many panes?",type:"MCQ",diff:"Medium",src:"Lec 5 JavaFX",opts:["Unlimited","Up to 3","Exactly one","Two"],ans:2,explain:"ONE parent only. Adding to second removes from first."},
+    {n:"Q9",text:"Add node to pane?",type:"MCQ",diff:"Medium",src:"Lec 5 JavaFX",opts:["pane.add(node)","pane.insert(node)","pane.getChildren().add(node)","pane.put(node)"],ans:2,explain:"<code>pane.getChildren().add(node)</code>"},
+    {n:"Q10",text:"new Scene(pane, 200, 250) — 200 and 250?",type:"MCQ",diff:"Medium",src:"Lec 5 JavaFX",opts:["height=200 width=250","width=200 height=250","x=200 y=250","cols=200 rows=250"],ans:1,explain:"Scene(root, WIDTH, HEIGHT): 200=width, 250=height."},
+    {n:"Q11",text:"StackPane does?",type:"MCQ",diff:"Medium",src:"Lec 5 JavaFX",opts:["Horizontal","Grid","Stacks nodes centered on each other","Tabs"],ans:2,explain:"StackPane stacks children in CENTER. Last added = on top."},
+    {n:"Q12",text:"JavaFX Color values range?",type:"MCQ",diff:"Medium",src:"Lec 5 JavaFX",opts:["0 to 255","0 to 100","0.0 to 1.0","0 to 360"],ans:2,explain:"0.0 to 1.0. Color(1,0,0,1) = pure red, fully opaque."},
+    {n:"Q13",text:"Color(1.0, 0.0, 0.0, 1.0) represents?",type:"MCQ",diff:"Hard",src:"Lec 5 JavaFX",opts:["Green","Blue","Pure red fully opaque","White"],ans:2,explain:"r=1.0, g=0.0, b=0.0, opacity=1.0 = pure red."},
+    {n:"Q14",text:"⚠️TRAP: Add node to two different panes?",type:"Trace",diff:"Trap",src:"Lec 5 JavaFX",opts:["Appears in both","Appears in last","Runtime exception / removed from first","Compile Error"],ans:2,explain:"⚠️TRAP: Node can only have ONE parent → runtime exception!",trap:true},
+    {n:"Q15",text:"JavaFX lifecycle order?",type:"Trace",diff:"Medium",src:"Lec 5 JavaFX",opts:["launch→constructor→start→show","constructor→launch→start→show","launch→start→constructor→show","main→constructor→launch→start"],ans:0,explain:"main() → launch() → JVM calls constructor → JVM calls start() → show()"}
+   ]
+  },
+  {id:"db",icon:"🗄️",label:"Databases & JDBC",
+   desc:"SQL basics · Primary Key · JDBC 6 Steps · DriverManager · Statement · ResultSet",
+   tags:["SELECT","WHERE","JDBC","ResultSet","executeQuery","executeUpdate","LIKE","JOIN"],
+   summary:{title:"Databases & JDBC",points:[
+    "Table = rows (records) + columns (fields). Primary Key = unique, NOT NULL.",
+    "Foreign Key = references Primary Key of another table.",
+    "JDBC 6 Steps: 1)Load driver 2)Connect 3)Statement 4)Execute 5)Process Results 6)Close.",
+    "<code>Class.forName('com.mysql.jdbc.Driver')</code> — throws ClassNotFoundException.",
+    "<code>executeQuery(sql)</code> for SELECT → ResultSet. <code>executeUpdate(sql)</code> for INSERT/UPDATE/DELETE → int.",
+    "ResultSet cursor starts BEFORE first row. <code>next()</code> advances. Column index starts at 1!",
+    "LIKE wildcards: % = 0+ chars, _ = exactly 1 char. BETWEEN is inclusive.",
+    "DISTINCT removes duplicates. AS creates alias. JOIN links tables."
+   ],trick:"NEVER use executeQuery for INSERT/UPDATE/DELETE or executeUpdate for SELECT → both throw SQLException! Column index starts at 1, not 0."},
+   questions:[
+    {n:"Q1",text:"'record' in database refers to?",type:"MCQ",diff:"Easy",src:"DB part1",opts:["Column","Table","A row of data","Primary key"],ans:2,explain:"Record = Row = one complete entry."},
+    {n:"Q2",text:"Primary Key must be?",type:"MCQ",diff:"Easy",src:"DB part1",opts:["NULL allowed","Duplicate allowed","Unique and NOT NULL","First column"],ans:2,explain:"PK: Unique + NOT NULL."},
+    {n:"Q3",text:"Foreign Key is used to?",type:"MCQ",diff:"Medium",src:"DB part1",opts:["Make field unique","Reference PK of another table","Speed queries","Create indexes"],ans:1,explain:"FK creates link between tables by referencing another's PK."},
+    {n:"Q4",text:"SQL stands for?",type:"MCQ",diff:"Easy",src:"DB part1",opts:["Simple Query Lexicon","Structured Query Language","Sequential Query Logic","Standard Query List"],ans:1,explain:"SQL = Structured Query Language."},
+    {n:"Q5",text:"SELECT * — what does * mean?",type:"MCQ",diff:"Easy",src:"DB part2",opts:["Nothing","First row","All columns","PK only"],ans:2,explain:"* = ALL columns."},
+    {n:"Q6",text:"SQL 'not equal' operator?",type:"MCQ",diff:"Easy",src:"DB part2",opts:["!=","!==","<>","=/="],ans:2,explain:"SQL uses <code><></code> for not equal (standard)."},
+    {n:"Q7",text:"BETWEEN 10 AND 20 equals?",type:"MCQ",diff:"Medium",src:"DB part2",opts:["x>10 AND x<20","x>=10 AND x<=20","x>10 AND x<=20","x>=10 AND x<20"],ans:1,explain:"BETWEEN is INCLUSIVE: x>=10 AND x<=20."},
+    {n:"Q8",text:"LIKE '%Smith%' matches?",type:"MCQ",diff:"Medium",src:"DB part2",opts:["Only 'Smith'","Starting with Smith","Containing 'Smith' anywhere","Ending with Smith"],ans:2,explain:"% = zero or more chars. '%Smith%' = Smith anywhere."},
+    {n:"Q9",text:"LIKE '_mi%' — _ means?",type:"MCQ",diff:"Medium",src:"DB part2",opts:["Zero+ chars","Exactly one char","Word boundary","Any digit"],ans:1,explain:"_ = exactly ONE character."},
+    {n:"Q10",text:"DISTINCT does?",type:"MCQ",diff:"Easy",src:"DB part2",opts:["Sorts","Filters duplicates","Joins tables","Creates indexes"],ans:1,explain:"DISTINCT removes duplicate rows from results."},
+    {n:"Q11",text:"AS keyword creates?",type:"MCQ",diff:"Medium",src:"DB part2",opts:["New table","Column copy","Alias (display name)","View"],ans:2,explain:"<code>SELECT firstName AS 'First Name'</code> — column display name alias."},
+    {n:"Q12",text:"JDBC stands for?",type:"MCQ",diff:"Easy",src:"DB part2",opts:["Java Data Base Connector","Java Database Control","Java Database Connectivity","Java Direct Binary"],ans:2,explain:"JDBC = Java Database Connectivity."},
+    {n:"Q13",text:"6 JDBC steps in order?",type:"Trace",diff:"Medium",src:"DB part2",opts:["Load→Connect→Statement→Execute→Process→Close","Connect→Load→Statement→Execute→Process→Close","Load→Statement→Connect→Execute→Process→Close","Connect→Statement→Load→Execute→Process→Close"],ans:0,explain:"1)Load driver 2)Connect 3)Create Statement 4)Execute 5)Process ResultSet 6)Close."},
+    {n:"Q14",text:"Class.forName() throws?",type:"MCQ",diff:"Medium",src:"DB part2",opts:["SQLException","IOException","ClassNotFoundException","DriverException"],ans:2,explain:"ClassNotFoundException if driver JAR not in classpath."},
+    {n:"Q15",text:"executeQuery() used for?",type:"MCQ",diff:"Medium",src:"DB part2",opts:["INSERT","UPDATE","DELETE","SELECT"],ans:3,explain:"executeQuery() → SELECT only → returns ResultSet."},
+    {n:"Q16",text:"executeUpdate() returns?",type:"MCQ",diff:"Medium",src:"DB part2",opts:["ResultSet","String","int (rows affected)","boolean"],ans:2,explain:"executeUpdate() returns int = rows affected."},
+    {n:"Q17",text:"ResultSet cursor initially?",type:"MCQ",diff:"Hard",src:"DB part2",opts:["First row","Last row","Before first row","Row 0"],ans:2,explain:"Cursor starts BEFORE first row. Must call next() first."},
+    {n:"Q18",text:"rs.getString(1) — index 1 means?",type:"MCQ",diff:"Medium",src:"DB part2",opts:["Second column","Index 0","First column","Row 1"],ans:2,explain:"Column index starts at 1 (not 0)! getString(0) throws exception."},
+    {n:"Q19",text:"MySQL JDBC URL format?",type:"MCQ",diff:"Medium",src:"DB part2",opts:["mysql://localhost/db","jdbc:mysql:localhost/db","jdbc:mysql://localhost/dbname","java:mysql://localhost/dbname"],ans:2,explain:"<code>jdbc:mysql://hostname/databasename</code>"},
+    {n:"Q20",text:"⚠️TRAP: executeQuery() for INSERT. What happens?",type:"Trace",diff:"Trap",src:"DB part2",opts:["Empty ResultSet","Inserts, returns ResultSet","Throws SQLException","Works fine"],ans:2,explain:"⚠️TRAP: executeQuery() for INSERT/UPDATE/DELETE throws SQLException!",trap:true},
+    {n:"Q21",text:"DELETE FROM Course — what happens?",type:"MCQ",diff:"Medium",src:"DB part2",opts:["Deletes table","Nothing","Deletes ALL rows","One row"],ans:2,explain:"DELETE without WHERE = deletes ALL rows! Always use WHERE."},
+    {n:"Q22",text:"Correct close order for JDBC?",type:"MCQ",diff:"Hard",src:"DB part2",opts:["connection→statement→resultSet","statement→connection→resultSet","resultSet→statement→connection","Any order"],ans:2,explain:"Close in REVERSE order: resultSet → statement → connection."}
+   ]
+  },
+  {id:"nourdb",icon:"📘",label:"Nour.Database",
+   desc:"DB Basics · Relations · Data Types · JDBC · DML · SELECT",
+   tags:["1:1","1:M","M:M","varchar","char","DML","Metadata"],
+   summary:{title:"Nour.Database",points:[
+    "Database: organized collection of related data. DBMS = management system.",
+    "Metadata = data about data (column names, types, constraints).",
+    "Relations: 1:1 (person-passport), 1:M most common, M:M needs junction table.",
+    "VARCHAR(n): variable-length. CHAR(n): fixed n chars (pads with spaces).",
+    "DML: INSERT, UPDATE, DELETE, SELECT.",
+    "UPDATE/DELETE without WHERE → affects ALL rows!",
+    "JDBC package: java.sql. Interfaces: Driver, Connection, Statement, ResultSet."
+   ],trick:"char(5) stores EXACTLY 5 chars (pads). varchar(5) stores up to 5 (no padding). Use varchar for names, char for fixed codes."},
+   questions:[
+    {n:"Q1",text:"What is a Database?",type:"MCQ",diff:"Easy",src:"Nour DB",opts:["Programming language","Organized collection of related data","A server","Algorithm"],ans:1,explain:"Database = organized structured data managed by DBMS."},
+    {n:"Q2",text:"Metadata?",type:"MCQ",diff:"Easy",src:"Nour DB",opts:["Data values","Data about data (structure, types, constraints)","Passwords","SQL queries"],ans:1,explain:"Metadata = structure description, not actual values."},
+    {n:"Q3",text:"Most common relationship?",type:"MCQ",diff:"Easy",src:"Nour DB",opts:["1:1","M:M","1:M","0:M"],ans:2,explain:"1:M most common. One teacher → many students."},
+    {n:"Q4",text:"M:M relationship requires?",type:"MCQ",diff:"Medium",src:"Nour DB",opts:["One FK","Direct link","Junction/bridge table","Two PKs in same table"],ans:2,explain:"M:M needs junction table with FKs from both sides."},
+    {n:"Q5",text:"varchar(10) vs char(10) — space for short strings?",type:"MCQ",diff:"Medium",src:"Nour DB",opts:["char(10)","varchar(10) — variable","Both same","Neither"],ans:1,explain:"varchar = variable length. char = always 10 chars (pads)."},
+    {n:"Q6",text:"1:1 relationship example?",type:"MCQ",diff:"Easy",src:"Nour DB",opts:["Teacher-Students","Student-Courses","Person-Passport","Products-Orders"],ans:2,explain:"Person-Passport: each person has exactly one passport."},
+    {n:"Q7",text:"DML stands for?",type:"MCQ",diff:"Easy",src:"Nour DB",opts:["Data Master Language","Data Management Logic","Data Manipulation Language","Database Modeling Language"],ans:2,explain:"DML = Data Manipulation Language: SELECT, INSERT, UPDATE, DELETE."},
+    {n:"Q8",text:"UPDATE Student SET gpa=4.0 without WHERE?",type:"MCQ",diff:"Medium",src:"Nour DB",opts:["One row","Nothing","ALL rows updated","Compile Error"],ans:2,explain:"Without WHERE → updates ALL rows! Always use WHERE clause."},
+    {n:"Q9",text:"Correct INSERT syntax?",type:"MCQ",diff:"Easy",src:"Nour DB",opts:["INSERT Student VALUES(...)","INSERT TO Student VALUES(...)","INSERT INTO Student VALUES(...)","ADD INTO Student VALUES(...)"],ans:2,explain:"<code>INSERT INTO TableName (cols) VALUES (vals);</code>"},
+    {n:"Q10",text:"BETWEEN 3.0 AND 4.0 — includes 3.0 and 4.0?",type:"MCQ",diff:"Medium",src:"Nour DB",opts:["No — exclusive","Yes — inclusive","Only 3.0","Only 4.0"],ans:1,explain:"BETWEEN is INCLUSIVE on both ends."},
+    {n:"Q11",text:"JDBC interface executing SQL?",type:"MCQ",diff:"Medium",src:"Nour DB",opts:["Driver","Connection","Statement","ResultSet"],ans:2,explain:"Statement executes SQL. Connection manages connection."},
+    {n:"Q12",text:"rs.getString(0) — correct?",type:"MCQ",diff:"Hard",src:"Nour DB",opts:["Yes, first column","Yes, row 0","No — column index starts at 1","Yes in MySQL"],ans:2,explain:"WRONG! Index starts at 1. getString(0) throws SQLException."},
+    {n:"Q13",text:"while(resultSet.next()) {} — does?",type:"MCQ",diff:"Easy",src:"Nour DB",opts:["Loops n times","Iterates each row of results","Counts rows","Checks if empty"],ans:1,explain:"rs.next() moves cursor, returns true if next row exists."},
+    {n:"Q14",text:"Best practice after DB operations?",type:"MCQ",diff:"Easy",src:"Nour DB",opts:["Delete table","Keep open","connection.close()","Restart JVM"],ans:2,explain:"Always close: resultSet → statement → connection."},
+    {n:"Q15",text:"SELECT DISTINCT dept — returns?",type:"MCQ",diff:"Easy",src:"Nour DB",opts:["All dept values","All students","Unique dept values only","In order"],ans:2,explain:"DISTINCT returns each value ONCE."}
+   ]
+  },
+  {id:"javafxnour",icon:"🎨",label:"JavaFX.Nour",
+   desc:"JavaFX vs Swing/AWT · Stage/Scene · Layout Panes · Color & Font",
+   tags:["HBox","VBox","StackPane","Font","Color","ImageView","setRotate"],
+   summary:{title:"JavaFX.Nour",points:[
+    "AWT (first) → Swing → JavaFX (from Java 8).",
+    "Extends Application, overrides start(Stage).",
+    "No main() needed from command line — JVM calls launch() automatically.",
+    "Multiple Stages (windows) allowed.",
+    "String is NOT a subclass of Node.",
+    "Base Pane: no automatic layout. StackPane: centered stack. HBox: row. VBox: column.",
+    "StackPane z-order: last added child = on TOP visually.",
+    "setStyle() applies CSS. setRotate(deg) rotates node."
+   ],trick:"StackPane default = Pos.CENTER. Last added child appears on top. Useful for overlaying text on shapes."},
+   questions:[
+    {n:"Q1",text:"Java GUI evolution order?",type:"MCQ",diff:"Easy",src:"Nour JavaFX",opts:["JavaFX→Swing→AWT","Swing→AWT→JavaFX","AWT→Swing→JavaFX","AWT→JavaFX→Swing"],ans:2,explain:"AWT (first) → Swing → JavaFX."},
+    {n:"Q2",text:"When is main() NOT needed in JavaFX?",type:"MCQ",diff:"Medium",src:"Nour JavaFX",opts:["Never","Command line only","Always optional","Using FXML"],ans:1,explain:"Command line: JVM auto-calls launch(). main() needed for IDE."},
+    {n:"Q3",text:"How many stages can JavaFX app have?",type:"MCQ",diff:"Medium",src:"Nour JavaFX",opts:["Exactly 1","Max 2","Unlimited","OS dependent"],ans:2,explain:"Multiple stages allowed. Create more with new Stage()."},
+    {n:"Q4",text:"NOT a subclass of Node?",type:"MCQ",diff:"Medium",src:"Nour JavaFX",opts:["Pane","Shape","Button","String"],ans:3,explain:"String is plain Java class. Not part of JavaFX Node hierarchy."},
+    {n:"Q5",text:"Base Pane class performs?",type:"MCQ",diff:"Medium",src:"Nour JavaFX",opts:["Auto center alignment","Horizontal","No automatic layout — manual","Grid"],ans:2,explain:"Base Pane: NO auto layout. Use setLayoutX/setLayoutY."},
+    {n:"Q6",text:"StackPane default alignment?",type:"MCQ",diff:"Medium",src:"Nour JavaFX",opts:["TOP_LEFT","BOTTOM_CENTER","CENTER","TOP_RIGHT"],ans:2,explain:"StackPane.DEFAULT = Pos.CENTER."},
+    {n:"Q7",text:"StackPane 3 children — which on top visually?",type:"MCQ",diff:"Hard",src:"Nour JavaFX",opts:["First added","Second","Last added","Random"],ans:2,explain:"Last added = on TOP (highest z-order)."},
+    {n:"Q8",text:"HBox arranges nodes?",type:"MCQ",diff:"Easy",src:"Nour JavaFX",opts:["Vertically","Grid","Horizontally in one row","Centered on each other"],ans:2,explain:"HBox = horizontal row. VBox = vertical column."},
+    {n:"Q9",text:"setStyle() applies?",type:"MCQ",diff:"Easy",src:"Nour JavaFX",opts:["Java code","CSS styles","FXML attributes","Animation"],ans:1,explain:"node.setStyle('-fx-background-color: blue;') — CSS with -fx- prefix."},
+    {n:"Q10",text:"setRotate(45) does?",type:"MCQ",diff:"Easy",src:"Nour JavaFX",opts:["Moves 45px","Scales by 45","Rotates 45 degrees","Opacity 45%"],ans:2,explain:"setRotate(degrees) rotates the node around its center."},
+    {n:"Q11",text:"One Image shared by how many ImageViews?",type:"MCQ",diff:"Medium",src:"Nour JavaFX",opts:["One only","Two max","Unlimited","Depends on size"],ans:2,explain:"One Image → many ImageViews. Saves memory."},
+    {n:"Q12",text:"One ImageView in how many panes?",type:"MCQ",diff:"Medium",src:"Nour JavaFX",opts:["Multiple","Unlimited","Only one","Two"],ans:2,explain:"ImageView IS a Node → one parent only."},
+    {n:"Q13",text:"⚠️TRAP: JavaFX lifecycle — constructor vs start() order?",type:"MCQ",diff:"Hard",src:"Nour JavaFX",opts:["start() first","Constructor before start()","Simultaneously","Only start()"],ans:1,explain:"⚠️: launch() → constructor → start(). Fields set in constructor available in start().",trap:true}
+   ]
+  },
+  {id:"mid",icon:"📝",label:"Mid Adv83",
+   desc:"Constructors · Inheritance · Abstract · Interface · Recursion · Bubble Sort",
+   tags:["recursion","bubble sort","extends","implements","abstract","super"],
+   summary:{title:"Midterm Questions",points:[
+    "Constructor: any params, NO return type — adding one makes it a regular method.",
+    "Abstract class CAN have constructor (called via super()).",
+    "extends before implements always.",
+    "Bubble sort: n-1 passes for n elements.",
+    "Recursion: find base case, trace from base upward.",
+    "this.field = child's own field. super.field = parent's field."
+   ],trick:"Bubble sort passes = n-1. For 4 elements → 3 passes max."},
+   questions:[
+    {n:"Q1",text:"TRUE about constructors?",type:"MCQ",diff:"Easy",src:"Mid Adv83",opts:["Can have any return type","Can take any number of parameters","Must be public","Cannot be overloaded"],ans:1,explain:"Constructors CAN take any parameters. NO return type. CAN be overloaded."},
+    {n:"Q2",text:"Abstract class can have constructor?",type:"MCQ",diff:"Medium",src:"Mid Adv83",opts:["No never","Yes","Only if no abstract methods","Only no-arg"],ans:1,explain:"YES! Called indirectly via super()."},
+    {n:"Q3",text:"Adding return type to constructor makes it?",type:"MCQ",diff:"Easy",src:"Mid Adv83",opts:["Abstract method","Still constructor","Regular method","Static method"],ans:2,explain:"Any return type (even void) = regular method, not constructor!"},
+    {n:"Q4",text:"Keyword for inheritance?",type:"MCQ",diff:"Easy",src:"Mid Adv83",opts:["implements","inherits","import","extends"],ans:3,explain:"extends for classes, implements for interfaces."},
+    {n:"Q5",text:"Correct inheritance syntax?",type:"MCQ",diff:"Easy",src:"Mid Adv83",opts:["class B:A{}","class B inherits A{}","class B extends A{}","class A extends B{}"],ans:2,explain:"<code>class B extends A { }</code>"},
+    {n:"Q6",text:"Trace the output of new B().display():",code:"class A { int i=1; }\nclass B extends A {\n  int j=2;\n  void display() { print(j); }\n}",type:"Trace",diff:"Medium",src:"Mid Adv83",opts:["1","2","1 2","Compile Error"],ans:1,explain:"display() prints j=2. Output: <code>2</code>"},
+    {n:"Q7",text:"Trace the output of new B().display():",code:"class A { int i=1; }\nclass B extends A {\n  int j = i + 1;\n  void display() {\n    print(super.i + \" \" + j);\n  }\n}",type:"Trace",diff:"Hard",src:"Mid Adv83",opts:["1 2","2 3","1 1","2 2"],ans:0,explain:"super.i=1, j=1+1=2. Output: <code>1 2</code>"},
+    {n:"Q8",text:"Trace the recursion output of func(5):",code:"int func(int n) {\n  if(n == 1) return 1;\n  return func(n - 1);\n}",type:"Trace",diff:"Hard",src:"Mid Adv83",opts:["5","0","1","Infinite"],ans:2,explain:"5→4→3→2→1→return 1. Each level returns 1. Final = 1."},
+    {n:"Q9",text:"Bubble sort — passes for n elements?",type:"MCQ",diff:"Medium",src:"Mid Adv83",opts:["n","n+1","n-1","n/2"],ans:2,explain:"n-1 passes. Each pass places largest unsorted at end."},
+    {n:"Q10",text:"Keyword to implement interface?",type:"MCQ",diff:"Easy",src:"Mid Adv83",opts:["extends","uses","inherits","implements"],ans:3,explain:"implements for interfaces."},
+    {n:"Q11",text:"class manager implements salary — correct?",type:"MCQ",diff:"Easy",src:"Mid Adv83",opts:["class manager extends salary","class manager inherits salary","class manager implements salary","class salary extends manager"],ans:2,explain:"<code>class manager implements salary { }</code>"},
+    {n:"Q12",text:"Trace the output if both methods are called:",code:"void displayA() {\n  int x = 2;\n  x *= 2;\n  print(x);\n}\nvoid displayB() {\n  int x = 2;\n  x /= 2;\n  print(x);\n}",type:"Trace",diff:"Hard",src:"Mid Adv83",opts:["4 1","1 4","2 2","4 4"],ans:0,explain:"displayA: 2*2=4. displayB: 2/2=1. LOCAL vars, separate. Output: <code>4 1</code>"},
+    {n:"Q13",text:"Child doesn't implement all abstract methods?",type:"MCQ",diff:"Medium",src:"Mid Adv83",opts:["Run empty","Compile Error unless child abstract","Runtime Error","Default values"],ans:1,explain:"Must implement all OR declare class abstract."}
+   ]
+  }
+];
+
+const state = {
+  chapter:'oop', filter:'all', diff:'all', search:'',
+  answers:JSON.parse(localStorage.getItem('java_answers')||'{}'),
+  bookmarks:JSON.parse(localStorage.getItem('java_bookmarks')||'{}'),
+  choices:JSON.parse(localStorage.getItem('java_choices')||'{}'),
+  revealed:{},
+  expanded:{}
+};
+
+function save(){
+  localStorage.setItem('java_answers',JSON.stringify(state.answers));
+  localStorage.setItem('java_bookmarks',JSON.stringify(state.bookmarks));
+  localStorage.setItem('java_choices',JSON.stringify(state.choices));
+  updateStats();
+}
+
+function updateStats(){
+  const allQ=CHAPTERS.flatMap(c=>c.questions);
+  const solved=Object.values(state.answers).filter(a=>a==='solved').length;
+  const bm=Object.keys(state.bookmarks).filter(k=>state.bookmarks[k]).length;
+  const wrong=Object.values(state.answers).filter(a=>a==='wrong').length;
+  document.getElementById('solved-count').textContent=solved;
+  document.getElementById('bm-count').textContent=bm;
+  document.getElementById('total-count').textContent=allQ.length;
+  const total=solved+wrong;
+  document.getElementById('score-pct').textContent=total?Math.round(solved/total*100)+'%':'0%';
+}
+
+function buildNav(){
+  const nav=document.getElementById('chapter-nav');
+  nav.innerHTML=CHAPTERS.map(ch=>{
+    const done=ch.questions.filter(q=>state.answers[ch.id+'-'+q.n]==='solved').length;
+    const pct=ch.questions.length?Math.round(done/ch.questions.length*100):0;
+    return `<button class="chapter-btn ${state.chapter===ch.id?'active':''}" onclick="selectChapter('${ch.id}')">
+      <span class="ch-icon">${ch.icon}</span><span class="ch-label">${ch.label}</span>
+      <span class="ch-count">${ch.questions.length}</span></button>
+    <div class="progress-bar-mini"><div class="progress-bar-mini-fill" style="width:${pct}%"></div></div>`;
+  }).join('');
+}
+
+function selectChapter(id){
+  state.chapter=id; state.revealed={};
+  buildNav(); renderChapter();
+}
+
+function renderChapter(){
+  const ch=CHAPTERS.find(c=>c.id===state.chapter);
+  if(!ch) return;
+  const allQ=ch.questions;
+  const done=allQ.filter(q=>state.answers[ch.id+'-'+q.n]==='solved').length;
+  const pct=allQ.length?Math.round(done/allQ.length*100):0;
+  const filtered=filterList(ch);
+  const area=document.getElementById('content-area');
+  area.innerHTML=`
+    <div class="chapter-header">
+      <div class="ch-title">${ch.icon} ${ch.label}</div>
+      <div class="ch-desc">${ch.desc}</div>
+      <div class="ch-tags">${ch.tags.map(t=>`<span class="ch-tag">${t}</span>`).join('')}</div>
+      <div class="ch-stats"><span class="ch-stat">Questions: <b>${allQ.length}</b></span>
+      <span class="ch-stat">Solved: <b>${done}</b></span>
+      <span class="ch-stat">Progress: <b>${pct}%</b></span></div>
+      <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+    </div>
+    ${renderSummary(ch)}
+    <div class="mode-bar">
+      <button class="filter-btn active" onclick="revealAll('${ch.id}')">&#x1F441; Show All Answers</button>
+      <button class="filter-btn" onclick="hideAll()">&#x1F648; Hide All</button>
+      <span class="mode-info">${filtered.length} questions shown</span>
+    </div>
+    <div class="questions-grid">${filtered.length?filtered.map(q=>renderQuestion(ch.id,q)).join(''):'<div class="empty-state">&#x1F50D; No questions match your filters</div>'}</div>
+  `;
+}
+
+function renderSummary(ch){
+  if(!ch.summary) return '';
+  const s=ch.summary;
+  return `<div class="summary-box">
+    <div class="summary-title">&#x1F4DA; ${s.title} — Quick Review</div>
+    ${s.points.map(p=>`<div class="key-point">${p}</div>`).join('')}
+  </div>${s.trick?`<div class="trick-box"><div class="trick-title">&#x1F4A1; Trick / Tip</div><div class="trick-content">${s.trick}</div></div>`:''}`;
+}
+
+function filterList(ch){
+  let qs=ch.questions;
+  const {filter,diff,search}=state;
+  if(filter==='mcq') qs=qs.filter(q=>q.type==='MCQ');
+  else if(filter==='trace') qs=qs.filter(q=>q.type==='Trace');
+  else if(filter==='bookmarked') qs=qs.filter(q=>state.bookmarks[ch.id+'-'+q.n]);
+  else if(filter==='unsolved') qs=qs.filter(q=>state.answers[ch.id+'-'+q.n]!=='solved');
+  if(diff!=='all'){
+    if(diff==='Trap') qs=qs.filter(q=>q.diff==='Trap'||q.trap);
+    else qs=qs.filter(q=>q.diff===diff);
+  }
+  if(search.trim()){const s=search.toLowerCase(); qs=qs.filter(q=>q.text.toLowerCase().includes(s)||(q.explain&&q.explain.toLowerCase().includes(s)));}
+  return qs;
+}
+
+function renderQuestion(chId,q){
+  const key=chId+'-'+q.n;
+  const ans=state.answers[key];
+  const bm=state.bookmarks[key];
+  const revealed=state.revealed[key];
+  const expanded=state.expanded[key];
+  const chosen=state.choices[key];
+  let cls='q-card';
+  if(bm) cls+=' bookmarked';
+  if(ans==='solved') cls+=' solved';
+  if(ans==='wrong') cls+=' wrong';
+  const diffLabel=q.diff.replace('⚠️ ','').replace('⚠️','');
+  
+  const opts=q.opts?`<ul class="options-list ${ans?'answered':''}">${q.opts.map((o,i)=>{
+    let optCls = 'option-item';
+    if(ans && i===q.ans) optCls += ' correct';
+    else if(ans==='wrong' && i===chosen) optCls += ' wrong-choice';
+    return `<li class="${optCls}" onclick="selectOption('${key}',${i},${q.ans})" id="opt-${key}-${i}"><span class="option-label">${String.fromCharCode(65+i)}.</span>${o}</li>`;
+  }).join('')}</ul>`:'';
+  
+  const qTextFormatted = q.text.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+  return `<div class="${cls}" id="card-${key}">
+    <div class="q-card-header" onclick="toggleReveal('${key}')">
+      <span class="q-number">${q.n}</span>
+      <div class="q-body">
+        <div class="q-text">${q.trap?'⚠️ ':''} ${qTextFormatted}</div>
+        ${q.code ? `<div class="q-code">${q.code}</div>` : ''}
+        <div class="q-meta">
+          <span class="q-type ${q.type.toLowerCase()}">${q.type}</span>
+          <span class="diff-badge diff-${diffLabel}">${q.diff}</span>
+          <span class="q-source">${q.src}</span>
+          ${ans==='solved'?'<span style="color:var(--green);font-size:11px">✅</span>':''}
+          ${ans==='wrong'?'<span style="color:var(--red);font-size:11px">❌</span>':''}
+        </div>
+      </div>
+      <div class="q-actions" onclick="event.stopPropagation()">
+        <button class="q-action-btn bookmark ${bm?'active':''}" onclick="toggleBookmark('${key}')" title="Bookmark">⭐</button>
+        <button class="q-action-btn mark-solved ${ans==='solved'?'active':''}" onclick="markAs('${key}','solved')" title="Solved">✅</button>
+        <button class="q-action-btn mark-wrong ${ans==='wrong'?'active':''}" onclick="markAs('${key}','wrong')" title="Wrong">❌</button>
+      </div>
+    </div>
+    <div class="q-options-panel ${expanded ? 'show' : ''}" id="panel-${key}">
+      ${opts}
+      <div class="q-solution ${(revealed || ans) ? 'show' : ''}" id="sol-${key}">
+        <div class="answer-label">✅ Answer</div>
+        <div class="answer-text">${q.opts?q.opts[q.ans]:''}</div>
+        ${q.explain?`<div class="explain-text">${q.explain}</div>`:''}
+        ${q.trap?`<div class="trap-warning">⚠️ EXAM TRAP — commonly missed!</div>`:''}
+      </div>
+    </div>
+  </div>`;
+}
+
+function toggleReveal(key){
+  state.expanded[key]=!state.expanded[key];
+  const el=document.getElementById('panel-'+key);
+  if(el) el.classList.toggle('show',state.expanded[key]);
+}
+
+function selectOption(key,chosen,correct){
+  if(state.answers[key]) return;
+  state.choices[key]=chosen;
+  document.querySelectorAll(`[id^="opt-${key}-"]`).forEach((el,i)=>{
+    if(i===correct) el.classList.add('correct');
+    else if(i===chosen&&chosen!==correct) el.classList.add('wrong-choice');
+  });
+  const sol=document.getElementById('sol-'+key);
+  if(sol) sol.classList.add('show');
+  markAs(key,chosen===correct?'solved':'wrong',true);
+}
+
+function markAs(key,status,silent=false){
+  state.answers[key]=state.answers[key]===status?'':status;
+  save();
+  const card=document.getElementById('card-'+key);
+  if(card){
+    card.classList.remove('solved','wrong');
+    if(state.answers[key]==='solved') card.classList.add('solved');
+    if(state.answers[key]==='wrong') card.classList.add('wrong');
+    card.querySelector('.mark-solved')?.classList.toggle('active',state.answers[key]==='solved');
+    card.querySelector('.mark-wrong')?.classList.toggle('active',state.answers[key]==='wrong');
+  }
+  if(!silent) showToast(status==='solved'?'✅ Marked solved':'❌ Marked for review');
+  buildNav();
+}
+
+function toggleBookmark(key){
+  state.bookmarks[key]=!state.bookmarks[key];
+  save();
+  const card=document.getElementById('card-'+key);
+  if(card){
+    card.classList.toggle('bookmarked',state.bookmarks[key]);
+    card.querySelector('.bookmark')?.classList.toggle('active',state.bookmarks[key]);
+  }
+  showToast(state.bookmarks[key]?'⭐ Bookmarked!':'Bookmark removed');
+  updateBmPanel();
+}
+
+function revealAll(chId){
+  const ch=CHAPTERS.find(c=>c.id===chId);
+  if(!ch) return;
+  ch.questions.forEach(q=>{
+    const key=chId+'-'+q.n;
+    state.revealed[key]=true;
+    state.expanded[key]=true;
+    const panel=document.getElementById('panel-'+key);
+    if(panel) panel.classList.add('show');
+    const sol=document.getElementById('sol-'+key);
+    if(sol) sol.classList.add('show');
+  });
+}
+
+function hideAll(){
+  Object.keys(state.revealed).forEach(k=>state.revealed[k]=false);
+  Object.keys(state.expanded).forEach(k=>state.expanded[k]=false);
+  document.querySelectorAll('.q-options-panel').forEach(el=>el.classList.remove('show'));
+  document.querySelectorAll('.q-solution').forEach(el=>el.classList.remove('show'));
+}
+
+function setFilter(type,btn){
+  state.filter=type;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderChapter();
+}
+
+function setDiff(diff,btn){
+  if(state.diff===diff){state.diff='all';btn.classList.remove('active');}
+  else{
+    state.diff=diff;
+    document.querySelectorAll('.diff-easy,.diff-medium,.diff-hard,.diff-trap').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  renderChapter();
+}
+
+function filterQuestions(){
+  state.search=document.getElementById('search-input').value;
+  renderChapter();
+}
+
+function togglePanel(){
+  document.getElementById('bm-panel').classList.toggle('open');
+  updateBmPanel();
+}
+
+function updateBmPanel(){
+  const bms=Object.keys(state.bookmarks).filter(k=>state.bookmarks[k]);
+  const list=document.getElementById('bm-list');
+  if(!bms.length){list.innerHTML='<div class="empty-state">No bookmarks yet. Star questions to save them.</div>';return;}
+  list.innerHTML=bms.map(key=>{
+    const [chId,...rest]=key.split('-'); const qn=rest.join('-');
+    const ch=CHAPTERS.find(c=>c.id===chId);
+    const q=ch?.questions.find(qq=>qq.n===qn);
+    if(!q) return '';
+    return `<div class="bookmark-item" onclick="selectChapter('${chId}')">
+      <div class="bookmark-item-num">${ch.icon} ${q.n}</div>
+      <div class="bookmark-item-text">${q.text.substring(0,80)}${q.text.length>80?'...':''}</div>
+      <div class="bookmark-item-ch">${ch.label}</div></div>`;
+  }).join('');
+}
+
+function resetAll(){
+  if(!confirm('Reset all progress?')) return;
+  state.answers={}; state.bookmarks={}; state.choices={}; state.revealed={}; state.expanded={};
+  save(); buildNav(); renderChapter();
+  showToast('Progress reset');
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
+}
+
+buildNav(); renderChapter(); updateStats(); updateBmPanel();
+</script>
+</body>
+</html>
